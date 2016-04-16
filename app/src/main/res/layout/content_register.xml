@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Id_number_heading"
+        android:textColor="#44a33c"
         android:id="@+id/textView2"
         android:layout_below="@+id/coursename_reg"
         android:layout_alignParentLeft="true"
@@ -46,6 +47,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#44a33c"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Id_time_heading"
         android:id="@+id/textView4"
