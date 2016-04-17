@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,10 +17,9 @@
         android:layout_height="90dp"
         android:id="@+id/imageView6"
         android:src="@drawable/create"
-        android:layout_marginTop="49dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,10 +30,10 @@
         android:textColor="#5d5757"
         android:singleLine="true"
         android:layout_alignTop="@+id/imageView6"
-        android:layout_toRightOf="@+id/imageView6"
-        android:layout_toEndOf="@+id/imageView6"
-        android:layout_marginTop="35dp"
-        android:layout_marginLeft="20dp" />
+        android:layout_toRightOf="@+id/btn_save"
+        android:layout_toEndOf="@+id/btn_save"
+        android:layout_x="178dp"
+        android:layout_y="8dp" />
 
     <Button
         android:layout_width="100dp"
@@ -45,10 +44,12 @@
         android:clickable="true"
         android:layout_below="@+id/code_editText"
         android:layout_toRightOf="@+id/imageView6"
-        android:layout_toEndOf="@+id/imageView6" />
+        android:layout_toEndOf="@+id/imageView6"
+        android:layout_x="245dp"
+        android:layout_y="200dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
         android:id="@+id/name_editText"
         android:hint="Course Name"
@@ -57,10 +58,12 @@
         android:layout_alignEnd="@+id/textView8"
         android:layout_alignLeft="@+id/imageView6"
         android:layout_alignStart="@+id/imageView6"
-        android:capitalize="words" />
+        android:capitalize="words"
+        android:layout_x="151dp"
+        android:layout_y="61dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="292dp"
         android:layout_height="wrap_content"
         android:id="@+id/code_editText"
         android:hint="Course Code e.g COMP 3275"
@@ -70,6 +73,8 @@
         android:layout_marginTop="43dp"
         android:layout_alignRight="@+id/name_editText"
         android:layout_alignEnd="@+id/name_editText"
-        android:capitalize="characters" />
+        android:capitalize="characters"
+        android:layout_x="154dp"
+        android:layout_y="131dp" />
 
-</RelativeLayout>
+</AbsoluteLayout>
