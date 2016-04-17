@@ -85,8 +85,6 @@ public class Register extends AppCompatActivity {
              new_coursecode= course_code.replaceAll("\\s+","");
 
             table_name=new_coursename+new_coursecode;
-        Toast.makeText(Register.this,"tableName:\n"+table_name, Toast.LENGTH_SHORT).show();
-
 
         //}
         //Toast.makeText(Register.this,"TableName"+ table_name, Toast.LENGTH_SHORT).show();

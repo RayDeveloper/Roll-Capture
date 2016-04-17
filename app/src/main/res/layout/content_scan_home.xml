@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,31 +10,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.uwi.sta.idrollcapture.MainActivity"
-    tools:showIn="@layout/activity_scan_home"
-    android:clickable="false">
+    tools:showIn="@layout/activity_scan_home">
 
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/StartCamera"
+        android:layout_marginLeft="57dp"
+        android:layout_marginStart="57dp"
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/camera"
-        android:layout_marginTop="44dp"
-        android:layout_below="@+id/coursecode_txtview"
-        android:layout_toLeftOf="@+id/coursecode_txtview"
-        android:layout_toStartOf="@+id/coursecode_txtview" />
+        android:layout_marginTop="84dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/Register"
-        android:layout_marginLeft="54dp"
-        android:layout_marginStart="54dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/schedule"
-        android:layout_above="@+id/Export"
+        android:layout_alignTop="@+id/StartCamera"
         android:layout_toRightOf="@+id/StartCamera"
-        android:layout_toEndOf="@+id/StartCamera" />
+        android:layout_toEndOf="@+id/StartCamera"
+        android:layout_marginLeft="43dp"
+        android:layout_marginStart="43dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:src="@drawable/schedule" />
 
     <ImageButton
         android:layout_width="100dp"
@@ -69,16 +67,5 @@
         android:layout_below="@+id/coursename_txtview"
         android:layout_alignLeft="@+id/coursename_txtview"
         android:layout_alignStart="@+id/coursename_txtview" />
-
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/folder"
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_alignTop="@+id/Export"
-        android:layout_alignLeft="@+id/Register"
-        android:layout_alignStart="@+id/Register"
-        android:clickable="true"
-        android:src="@drawable/folder" />
 
 </RelativeLayout>

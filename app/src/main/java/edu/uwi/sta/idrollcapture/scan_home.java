@@ -3,41 +3,30 @@ package edu.uwi.sta.idrollcapture;
 /**
  * Created by Raydon on 3/18/2016.
  */
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.accessibility.AccessibilityEvent;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
@@ -45,30 +34,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
-import java.util.List;
-import android.content.pm.PackageManager;
 
 import edu.uwi.sta.idrollcapture.Models.DBHelper;
 
-public class scan_home extends AppCompatActivity {
+public class scan_home extends AppCompatActivity  {
     Button button;
     String coursename;
     String coursecode;
     String filename;
-    int numberofIDS = 0;
-    String TotalIDs = "";
+    int numberofIDS=0;
+    String TotalIDs="";
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-    private boolean hasPermission;
-    private static final int REQUEST_NETWORK_ACCESS = 112;
-    public final String[] allFiles = new String[0];
-    public  String SCAN_PATH="" ;
-    public  String FILE_TYPE="text/*";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,34 +53,34 @@ public class scan_home extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String course_name = prefs.getString("coursename", null);//"No name defined" is the default value.
-        String course_code = prefs.getString("coursecode", null);//"No name defined" is the default value.
-        TextView coursename_txtview = (TextView) findViewById(R.id.coursename_txtview);
-        coursename_txtview.setText(course_name);
-        TextView coursecode_txtview = (TextView) findViewById(R.id.coursecode_txtview);
-        coursecode_txtview.setText(course_code);
+            String course_name = prefs.getString("coursename",null);//"No name defined" is the default value.
+            String course_code = prefs.getString("coursecode",null);//"No name defined" is the default value.
+            TextView coursename_txtview = (TextView) findViewById(R.id.coursename_txtview);
+            coursename_txtview.setText(course_name);
+            TextView coursecode_txtview = (TextView) findViewById(R.id.coursecode_txtview);
+            coursecode_txtview.setText(course_code);
 
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
+        if(bundle !=null){
 //        if (bundle.containsKey("coursename")) {
             coursename = bundle.getString("coursename");
-            coursecode = bundle.getString("coursecode");
-            String new_coursename = coursename.replaceAll("\\s+", "");
-            String new_coursecode = coursecode.replaceAll("\\s+", "");
-            filename = new_coursename + new_coursecode;
+             coursecode = bundle.getString("coursecode");
+            String new_coursename=coursename.replaceAll("\\s+","");
+            String new_coursecode=coursecode.replaceAll("\\s+","");
+             filename=new_coursename+new_coursecode;
 
 //            TextView coursename_txtview = (TextView) findViewById(R.id.coursename_txtview);
 //            coursename_txtview.setText(coursename);
@@ -114,31 +90,22 @@ public class scan_home extends AppCompatActivity {
             //SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
 
-            //Toast.makeText(scan_home.this, "File Name:" + filename, Toast.LENGTH_LONG).show();
+            // Toast.makeText(scan_home.this, coursename, Toast.LENGTH_SHORT).show();
         }
 
 
-        checkRequestPermission();
+
 
         final ImageButton StartCamera = (ImageButton) findViewById(R.id.StartCamera);
         StartCamera.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // checkRequestPermission();
-
-
-                PackageManager pm = getApplicationContext().getPackageManager();
-
-                if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                    Toast.makeText(getApplicationContext(), "This device has no camera.", Toast.LENGTH_SHORT).show();
-
-                }else {
-                    Intent intent = new Intent(scan_home.this, ContinuousCaptureActivity.class);
+                Intent intent = new Intent(scan_home.this, ContinuousCaptureActivity.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putString("coursename",coursename); // place the position of the selected item
 //                bundle.putString("coursecode", coursecode); // place the position of the selected item
 //                intent.putExtras(bundle);
-                    startActivity(intent);
-                }
+                startActivity(intent);
+
 
             }
 
@@ -167,7 +134,7 @@ public class scan_home extends AppCompatActivity {
         final ImageButton Export = (ImageButton) findViewById(R.id.Export);
         Export.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //checkRequestPermission2();
+
                 new AlertDialog.Builder(scan_home.this)
                         .setTitle("Export Register")
                         .setMessage("Are you sure you want to export the register.It is advised that you export after every roll taking so at the end you can see the days.This may take a while depending on the number of students scanned.\nThe directory is in the Local Storage->Student Roll Capture")
@@ -178,7 +145,7 @@ public class scan_home extends AppCompatActivity {
                                 final SQLiteDatabase db = mDbHelper.getWritableDatabase();
                                 Cursor cursor = db.query(filename, new String[]{"idnumber", "time"}, null, null, null, null, null);
                                 //cursor is now at the first result returned by this query
-                                String fileHeading = coursename + " " + coursecode + "\n";
+                                String fileHeading=coursename+" "+coursecode+"\n";
                                 writeToFile(fileHeading, filename);
                                 writeToFile("StudentID         Time Scanned", filename);
                                 //writeToFile("Time Scanned        ", filename);
@@ -187,15 +154,15 @@ public class scan_home extends AppCompatActivity {
                                     do {
                                         String db_idnumber = cursor.getString(cursor.getColumnIndex("idnumber"));
                                         String db_time = cursor.getString(cursor.getColumnIndex("time"));
-                                        String line = db_idnumber + "  " + db_time;
+                                        String line = db_idnumber +" "+ db_time;
                                         writeToFile(line, filename);
                                         numberofIDS++;
                                         //do something with name
                                     }
                                     while (cursor.moveToNext()); //loop will terminate when all the rows are exhausted
                                 }
-                                TotalIDs = TotalIDs + numberofIDS;
-                                writeToFile("Total Number of Students: " + TotalIDs, filename);
+                                TotalIDs=TotalIDs+numberofIDS;
+                                writeToFile("Total Number of Students: "+TotalIDs, filename);
 
                                 //DBHelper mDbHelper = new DBHelper(CourseList.this);
                                 //final SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -225,18 +192,12 @@ public class scan_home extends AppCompatActivity {
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-
             }
 
         });
 
-        final ImageButton viewFolder = (ImageButton) findViewById(R.id.folder);
-        viewFolder.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                openFile(filename);
-            }
 
-            });
+
 
 
 //        final ImageButton Cam = (ImageButton) findViewById(R.id.Cam);
@@ -250,212 +211,44 @@ public class scan_home extends AppCompatActivity {
 //
 //        });
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    public void writeToFile(String data, String filename) {
+    public void writeToFile(String data,String filename) {
 
-        String fileName = filename + ".doc";//like 2016_01_12.txt
+        String fileName = filename + ".txt";//like 2016_01_12.txt
 
 
-        try {
-            File root = new File(Environment.getExternalStorageDirectory() + File.separator + "Student Roll Capture");
+        try
+        {
+            File root = new File(Environment.getExternalStorageDirectory()+File.separator+"Student Roll Capture");
             //File root = new File(Environment.getExternalStorageDirectory(), "Notes");
-            if (!root.exists()) {
+            if (!root.exists())
+            {
                 root.mkdirs();
             }
             File gpxfile = new File(root, fileName);
 
 
-            FileWriter writer = new FileWriter(gpxfile, true);
-            writer.append(data + "\n\n");
+            FileWriter writer = new FileWriter(gpxfile,true);
+            writer.append(data+"\n\n");
             writer.flush();
             writer.close();
             Toast.makeText(this, "Please wait writing to file....", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
+        }
+        catch(IOException e)
+        {
             e.printStackTrace();
 
         }
     }
 
-    public void openFile(String filename) {
 
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Student Roll Capture"+File.separator+filename+".txt");
-       // Toast.makeText(this,"Path: \n"+Environment.getExternalStorageDirectory() + File.separator + "Student Roll Capture"+File.separator+filename+".doc", Toast.LENGTH_LONG).show();
-        Intent i = new Intent();
-        i.setAction(android.content.Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.fromFile(file), "text/plain");
-        //startActivity(i);
-        //intent.setType("text/plain");
-        PackageManager pm = getPackageManager();
-        List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
-        if (activities.size() > 0) {
-            startActivity(i);
-        } else {
-            Toast.makeText(getApplicationContext(), "There is no app to open the file.", Toast.LENGTH_LONG).show();
-
-            // Do something else here. Maybe pop up a Dialog or Toast
-        }
-
-        //Toast.makeText(this,Environment.getExternalStorageDirectory(),filename +".txt", Toast.LENGTH_SHORT).show();
-//
-//        File file = new File(Environment.getExternalStorageDirectory(),filename+".txt");
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//        Uri uri = Uri.fromFile(file);
-//        intent.setDataAndType(uri, "text/plain");
-//        startActivity(intent);
-
-
-
-//        //File file = new File(Environment.getExternalStorageDirectory(),filename+".txt");
-//               Uri uri=Uri.parse("Local storage/Device storage/Student Roll Capture/"+filename+".txt");
-//                Toast.makeText(this,"Local storage/Device storage/Student Roll Capture/"+filename+".txt", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setData(uri);
-//        //intent.setType("text/plain"); // Optional
-//        startActivity(intent);
-
-
-
-
-//        File file = new File(Environment.getExternalStorageDirectory(),filename+".txt");
-//        //Uri uri = Uri.parse("file://" + file.getAbsolutePath());
-//       Uri uri=Uri.parse( file.getAbsolutePath());
-//
-//        Toast.makeText(this,"path: "+file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-//
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setData(uri);
-
-
-
-
-
-
-        //intent.setAction(android.content.Intent.ACTION_VIEW);
-
-        //startActivity(intent);
-        //startActivity(Intent.createChooser(intent, "Open folder"));
-
-//        Intent intent = new Intent(Intent.ACTION_VIEW,
-//                Uri.parse("Student Roll Capture/"+filename+".txt"));
-//        Toast.makeText(this, "Student Roll Capture "+filename+".txt", Toast.LENGTH_SHORT).show();
-//
-//        intent.setType("text/plain");
-//        PackageManager pm = getPackageManager();
-//        List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
-//        if (activities.size() > 0) {
-//            startActivity(intent);
-//        } else {
-//            Toast.makeText(this, "Else statement", Toast.LENGTH_SHORT).show();
-//
-//            // Do something else here. Maybe pop up a Dialog or Toast
-//        }
-
-//        File file = new File(filename+".txt");
-//
-//// Just example, you should parse file name for extension
-//        //String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(".txt");
-//
-//        Intent intent = new Intent();
-//        intent.setAction(android.content.Intent.ACTION_VIEW);
-//        intent.setDataAndType(Uri.fromFile(file), ".txt");
-//        startActivityForResult(intent, 10);
-
-
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
-//                + "/myFolder/");
-//        intent.setDataAndType(uri, "text/csv");
-//        startActivity(Intent.createChooser(intent, "Open folder"));
-
-//        File file = new File(Environment.getExternalStorageDirectory()+ File.separator + "/Student Roll Capture/");
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setDataAndType(Uri.fromFile(file), "application/file");
-//        startActivity(Intent.createChooser(intent,"Open Folder"));
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
-//                + "Student Roll Capture");
-//        intent.setDataAndType(uri, "text/plain");
-//        startActivity(Intent.createChooser(intent, "Open folder"));
-    }
-
-
-
-
-    public void checkRequestPermission(){
-
-
-        hasPermission = (ActivityCompat.checkSelfPermission(this, Manifest.permission.VIBRATE)
-                == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED );
-
-        if (!hasPermission){
-            ActivityCompat.requestPermissions(this,
-                    new String[]{
-                            Manifest.permission.VIBRATE,
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-
-                    },
-                    REQUEST_NETWORK_ACCESS);
-        }
-    }
     @Override
-    public void onRequestPermissionsResult(int requestCode,String permissions[],int[] grantResults){
-        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED &&ActivityCompat.checkSelfPermission(this, Manifest.permission.VIBRATE)
-                == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED){
-//        switch(requestCode){
-//            case REQUEST_NETWORK_ACCESS:{
-            //if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-            //reload my activity
-            //Toast.makeText(this,"Granted",Toast.LENGTH_LONG).show();
-
-//                    Intent i = getIntent();
-//                    finish();
-//                    startActivity(i);
-        }else{
-            new AlertDialog.Builder(scan_home.this)
-                    .setTitle("Permission Denied")
-                    .setMessage("The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end.")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-            //Toast.makeText(this,"The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end." ,Toast.LENGTH_LONG).show();
-
-            // finish();
-        }
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
-
-
-    // }
-
-
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-
 
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
