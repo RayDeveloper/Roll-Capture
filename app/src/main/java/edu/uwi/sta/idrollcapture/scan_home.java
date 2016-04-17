@@ -137,7 +137,7 @@ public class scan_home extends AppCompatActivity  {
 
                 new AlertDialog.Builder(scan_home.this)
                         .setTitle("Export Register")
-                        .setMessage("Are you sure you want to export the register.This may take a while depending on the number of students scanned.")
+                        .setMessage("Are you sure you want to export the register.It is advised that you export after every roll taking so at the end you can see the days.This may take a while depending on the number of students scanned.\nThe directory is in the Local Storage->Student Roll Capture")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 DBHelper mDbHelper = new DBHelper(scan_home.this);
