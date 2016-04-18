@@ -55,6 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         db.close();
+        cursor.close();
         return FavList;
     }
 
