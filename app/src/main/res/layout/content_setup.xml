@@ -28,8 +28,6 @@
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
         android:id="@+id/imageView6"
         android:src="@drawable/plus"
         android:layout_marginTop="49dp"
