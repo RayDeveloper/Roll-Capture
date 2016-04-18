@@ -1,12 +1,15 @@
 package edu.uwi.sta.idrollcapture;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,6 +23,8 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
+    private boolean hasPermission;
+    private static final int REQUEST_NETWORK_ACCESS = 112;
 
 //from anna
 
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        checkRequestPermission();
+
         final ImageView newCourse = (ImageView) findViewById(R.id.newCourse);
         newCourse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         final ImageView courseList = (ImageView) findViewById(R.id.courseList);
         courseList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 Intent intent = new Intent(MainActivity.this, CourseList.class);
                 startActivity(intent);
             }
@@ -96,6 +104,67 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void checkRequestPermission(){
+
+
+        hasPermission = (ActivityCompat.checkSelfPermission(this, Manifest.permission.VIBRATE)
+                == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED );
+
+        if (!hasPermission){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.VIBRATE,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+
+                    },
+                    REQUEST_NETWORK_ACCESS);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[],int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED &&ActivityCompat.checkSelfPermission(this, Manifest.permission.VIBRATE)
+                == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+//        switch(requestCode){
+//            case REQUEST_NETWORK_ACCESS:{
+            //if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+            //reload my activity
+            //Toast.makeText(this,"Granted",Toast.LENGTH_LONG).show();
+
+//                    Intent i = getIntent();
+//                    finish();
+//                    startActivity(i);
+        }else{
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Permission Denied")
+                    .setMessage("The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            //Toast.makeText(this,"The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end." ,Toast.LENGTH_LONG).show();
+
+           // finish();
+        }
+
+    }
+    // }
+
 
     @Override
     public void onBackPressed() {

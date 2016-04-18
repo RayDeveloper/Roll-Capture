@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,43 +21,30 @@
         android:id="@+id/StartCamera"
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/camera"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/coursecode_txtview"
-        android:layout_toLeftOf="@+id/coursecode_txtview"
-        android:layout_toStartOf="@+id/coursecode_txtview" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="39dp"
+        android:layout_marginStart="39dp"
+        android:layout_gravity="center_vertical"
+        android:layout_x="102dp"
+        android:layout_y="58dp" />
 
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/Register"
-        android:layout_marginLeft="54dp"
-        android:layout_marginStart="54dp"
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/schedule"
-        android:layout_above="@+id/Export"
-        android:layout_toRightOf="@+id/StartCamera"
-        android:layout_toEndOf="@+id/StartCamera" />
-
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/Export"
-        android:layout_marginTop="84dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/export"
-        android:layout_below="@+id/StartCamera"
-        android:layout_alignLeft="@+id/StartCamera"
-        android:layout_alignStart="@+id/StartCamera" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/coursename_txtview"
-        android:textSize="18dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/coursecode_txtview"
+        android:layout_toRightOf="@+id/coursecode_txtview"
+        android:layout_toEndOf="@+id/coursecode_txtview"
+        android:layout_marginLeft="56dp"
+        android:layout_marginStart="56dp"
+        android:layout_gravity="center_vertical"
+        android:layout_x="349dp"
+        android:layout_y="56dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +55,35 @@
         android:textSize="18dp"
         android:layout_below="@+id/coursename_txtview"
         android:layout_alignLeft="@+id/coursename_txtview"
-        android:layout_alignStart="@+id/coursename_txtview" />
+        android:layout_alignStart="@+id/coursename_txtview"
+        android:layout_x="155dp"
+        android:layout_y="33dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/coursename_txtview"
+        android:textSize="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_x="325dp"
+        android:layout_y="30dp" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/Export"
+        android:layout_marginTop="84dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:src="@drawable/export"
+        android:layout_below="@+id/StartCamera"
+        android:layout_alignLeft="@+id/StartCamera"
+        android:layout_alignStart="@+id/StartCamera"
+        android:layout_gravity="center_vertical"
+        android:layout_x="105dp"
+        android:layout_y="165dp" />
 
     <ImageButton
         android:layout_width="100dp"
@@ -79,6 +94,8 @@
         android:layout_alignLeft="@+id/Register"
         android:layout_alignStart="@+id/Register"
         android:clickable="true"
-        android:src="@drawable/folder" />
+        android:src="@drawable/folder"
+        android:layout_x="342dp"
+        android:layout_y="166dp" />
 
-</RelativeLayout>
+</AbsoluteLayout>
