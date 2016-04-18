@@ -56,7 +56,7 @@
         android:layout_below="@+id/code_editText"
         android:layout_alignLeft="@+id/code_editText"
         android:layout_alignStart="@+id/code_editText"
-        android:background="#e9f9ef"
+        android:background="#e3e4e3"
         android:textColor="@android:color/black"/>
         <!--android:background="@android:color/darker_gray"-->
 
