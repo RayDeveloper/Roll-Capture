@@ -20,8 +20,8 @@
         android:layout_height="100dp"
         android:id="@+id/StartCamera"
         android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/camera"
-        android:layout_marginTop="44dp"
+        android:src="@drawable/technology"
+        android:layout_marginTop="46dp"
         android:layout_below="@+id/coursecode_txtview"
         android:layout_toLeftOf="@+id/coursecode_txtview"
         android:layout_toStartOf="@+id/coursecode_txtview" />
@@ -30,24 +30,22 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/Register"
-        android:layout_marginLeft="54dp"
-        android:layout_marginStart="54dp"
         android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/schedule"
-        android:layout_above="@+id/Export"
-        android:layout_toRightOf="@+id/StartCamera"
-        android:layout_toEndOf="@+id/StartCamera" />
+        android:src="@drawable/tool"
+        android:layout_alignTop="@+id/StartCamera"
+        android:layout_alignRight="@+id/folder"
+        android:layout_alignEnd="@+id/folder" />
 
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/Export"
-        android:layout_marginTop="84dp"
         android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/export"
-        android:layout_below="@+id/StartCamera"
-        android:layout_alignLeft="@+id/StartCamera"
-        android:layout_alignStart="@+id/StartCamera" />
+        android:src="@drawable/cexport"
+        android:layout_below="@+id/textView5"
+        android:layout_toLeftOf="@+id/coursecode_txtview"
+        android:layout_toStartOf="@+id/coursecode_txtview"
+        android:layout_marginTop="82dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,6 +54,7 @@
         android:text="Large Text"
         android:id="@+id/coursename_txtview"
         android:textSize="18dp"
+        android:textColor="#44a33c"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -64,6 +63,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
+        android:textColor="#44a33c"
         android:id="@+id/coursecode_txtview"
         android:textSize="18dp"
         android:layout_below="@+id/coursename_txtview"
@@ -75,10 +75,47 @@
         android:layout_height="100dp"
         android:id="@+id/folder"
         android:background="?android:attr/selectableItemBackground"
-        android:layout_alignTop="@+id/Export"
-        android:layout_alignLeft="@+id/Register"
-        android:layout_alignStart="@+id/Register"
         android:clickable="true"
-        android:src="@drawable/folder" />
+        android:src="@drawable/fold"
+        android:layout_above="@+id/textView13"
+        android:layout_toRightOf="@+id/coursecode_txtview"
+        android:layout_toEndOf="@+id/coursecode_txtview" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="     Camera"
+        android:id="@+id/textView5"
+        android:layout_toLeftOf="@+id/coursecode_txtview"
+        android:layout_alignTop="@+id/textView6"
+        android:layout_alignLeft="@+id/StartCamera"
+        android:layout_alignStart="@+id/StartCamera" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Opens the register"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/Register"
+        android:layout_alignRight="@+id/Register"
+        android:layout_alignEnd="@+id/Register" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open .txt file"
+        android:id="@+id/textView12"
+        android:layout_below="@+id/folder"
+        android:layout_alignLeft="@+id/folder"
+        android:layout_alignStart="@+id/folder" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="      Export"
+        android:id="@+id/textView13"
+        android:layout_below="@+id/Export"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignStart="@+id/textView5" />
 
 </RelativeLayout>

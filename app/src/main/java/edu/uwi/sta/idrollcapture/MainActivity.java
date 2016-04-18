@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasPermission;
     private static final int REQUEST_NETWORK_ACCESS = 112;
 
-
+//from anna
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

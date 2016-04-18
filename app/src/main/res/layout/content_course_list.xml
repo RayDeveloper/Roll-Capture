@@ -30,6 +30,7 @@
         android:id="@+id/course_code"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/code_heading"
+        android:textColor="#44a33c"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -39,6 +40,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/course_heading"
+        android:textColor="#44a33c"
         android:id="@+id/course_name"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -46,7 +48,7 @@
 
     <ListView
         android:layout_width="700dp"
-        android:layout_height="400dp"
+        android:layout_height="600dp"
         android:id="@+id/courseList_view"
         android:layout_below="@+id/course_name"
         android:layout_alignParentLeft="true"
