@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED );
-
+//check group permissons
         if (!hasPermission){
             ActivityCompat.requestPermissions(this,
                     new String[]{
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
+        if (doubleBackToExitPressedOnce) {//if true go back
             super.onBackPressed();
             return;
         }
@@ -179,9 +179,11 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
 
             @Override
-            public void run() {
+            public void run() {//resets value after 2secs
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
     }
+
+
 }

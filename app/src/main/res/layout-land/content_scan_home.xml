@@ -47,7 +47,7 @@
         android:layout_y="56dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
@@ -56,11 +56,11 @@
         android:layout_below="@+id/coursename_txtview"
         android:layout_alignLeft="@+id/coursename_txtview"
         android:layout_alignStart="@+id/coursename_txtview"
-        android:layout_x="155dp"
-        android:layout_y="33dp" />
+        android:layout_x="446dp"
+        android:layout_y="20dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
@@ -68,8 +68,8 @@
         android:textSize="18dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_x="325dp"
-        android:layout_y="30dp" />
+        android:layout_x="15dp"
+        android:layout_y="15dp" />
 
     <ImageButton
         android:layout_width="100dp"

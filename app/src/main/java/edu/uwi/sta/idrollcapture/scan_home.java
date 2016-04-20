@@ -129,7 +129,7 @@ public class scan_home extends AppCompatActivity {
                 PackageManager pm = getApplicationContext().getPackageManager();
 
                 if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                    Toast.makeText(getApplicationContext(), "This device has no camera.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "This device does not have camera.", Toast.LENGTH_SHORT).show();
 
                 }else {
                     Intent intent = new Intent(scan_home.this, ContinuousCaptureActivity.class);
@@ -257,7 +257,7 @@ public class scan_home extends AppCompatActivity {
 
     public void writeToFile(String data, String filename) {
 
-        String fileName = filename + ".doc";//like 2016_01_12.txt
+        String fileName = filename + ".txt";//like 2016_01_12.txt
 
 
         try {

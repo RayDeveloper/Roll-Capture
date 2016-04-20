@@ -21,7 +21,7 @@
         android:id="@+id/StartCamera"
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/camera"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="53dp"
         android:layout_below="@+id/coursecode_txtview"
         android:layout_toLeftOf="@+id/coursecode_txtview"
         android:layout_toStartOf="@+id/coursecode_txtview" />
@@ -30,13 +30,11 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/Register"
-        android:layout_marginLeft="54dp"
-        android:layout_marginStart="54dp"
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/schedule"
         android:layout_above="@+id/Export"
-        android:layout_toRightOf="@+id/StartCamera"
-        android:layout_toEndOf="@+id/StartCamera" />
+        android:layout_toRightOf="@+id/coursecode_txtview"
+        android:layout_toEndOf="@+id/coursecode_txtview" />
 
     <ImageButton
         android:layout_width="100dp"
