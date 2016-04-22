@@ -45,6 +45,7 @@ public class CourseList extends AppCompatActivity {
     String courseName;
     String courseCode;
     String oldTable;
+    int isChecked=-1;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -58,16 +59,16 @@ public class CourseList extends AppCompatActivity {
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent= new Intent(CourseList.this,Setup.class);
-                startActivity(intent);
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent= new Intent(CourseList.this,Setup.class);
+//                startActivity(intent);
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+//            }
+//        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Toast.makeText(CourseList.this,"Long press for options.", Toast.LENGTH_SHORT).show();
@@ -79,6 +80,7 @@ public class CourseList extends AppCompatActivity {
         DBHelper help = new DBHelper(getBaseContext());
         courseList = help.getCourse();
         CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
+        listView.setEmptyView(findViewById(android.R.id.empty));
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -302,61 +304,76 @@ public class CourseList extends AppCompatActivity {
             DBHelper mDbHelper = new DBHelper(CourseList.this);
             final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-
             public void onClick(DialogInterface dialog, int id) {
                 String new_courseName = coursename.getText().toString();
                 String new_courseCode = coursecode.getText().toString();
-                int ischecked = duplicateCheck(new_courseName, new_courseCode);
-                if(ischecked==1) {
-                    String new_coursename = new_courseName.replaceAll("\\s+", "");
-                    String new_coursecode = new_courseCode.replaceAll("\\s+", "");
-                    String new_tablename = new_coursename + new_coursecode;
-                    // String sql="Update course set coursename = '" + new_courseName + "' and coursecode = '" + new_courseCode + "' where coursecode = '" + courseCode +"' ";
-                    //db.execSQL(sql);
-                    //Toast.makeText(CourseList.this,sql, Toast.LENGTH_LONG).show();
+                String new_newcoursename = new_courseName.replaceAll("\\s+", "");
+                String new_newcoursecode = new_courseCode.replaceAll("\\s+", "");
+                String new_newtable=new_newcoursename+new_newcoursecode;
 
-                    ContentValues values = new ContentValues();
-                    values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME, new_courseName);
-                    values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE, new_courseCode);
-                    db.update(CourseContract.CourseEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
-                    String sql = "ALTER TABLE '" + table_name + "' RENAME TO '" + new_tablename + "' ";
-                    db.execSQL(sql);
+                if(oldTable.equals(new_newtable)) {
+                //if(new_courseName.equals(courseName)&& new_courseCode.equals(courseCode)) {
+                     isChecked=-1;
+                 }else {
+                     isChecked = duplicateCheck(new_courseName, new_courseCode);
+                 }
+                    if (isChecked == 1) {
 
-                    //Toast.makeText(CourseList.this,"tableName:"+CourseContract.CourseEntry.TABLE_NAME, Toast.LENGTH_SHORT).show();
+                        String new_coursename = new_courseName.replaceAll("\\s+", "");
+                        String new_coursecode = new_courseCode.replaceAll("\\s+", "");
+                        String new_tablename = new_coursename + new_coursecode;
+                        // String sql="Update course set coursename = '" + new_courseName + "' and coursecode = '" + new_courseCode + "' where coursecode = '" + courseCode +"' ";
+                        //db.execSQL(sql);
+                        //Toast.makeText(CourseList.this,sql, Toast.LENGTH_LONG).show();
 
-                    //db.update(IDsContract.IDsEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
+                            ContentValues values = new ContentValues();
+                            values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME, new_courseName);
+                            values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE, new_courseCode);
+                            db.update(CourseContract.CourseEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
+                            String sql = "ALTER TABLE '" + table_name + "' RENAME TO '" + new_tablename + "' ";
+                            db.execSQL(sql);
 
-                    //db.update(table_name, values, "coursename='" + courseName + "'", null);
+                            //Toast.makeText(CourseList.this,"tableName:"+CourseContract.CourseEntry.TABLE_NAME, Toast.LENGTH_SHORT).show();
 
-                    // IDsDBHelper mDbHelper2 = new IDsDBHelper(getApplicationContext(),table_name);
-                    //final SQLiteDatabase db2 = mDbHelper2.getWritableDatabase();
+                            //db.update(IDsContract.IDsEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
 
-                    //db.update(IDsContract.IDsEntry.TABLE_NAME, values,null, null);
+                            //db.update(table_name, values, "coursename='" + courseName + "'", null);
+
+                            // IDsDBHelper mDbHelper2 = new IDsDBHelper(getApplicationContext(),table_name);
+                            //final SQLiteDatabase db2 = mDbHelper2.getWritableDatabase();
+
+                            //db.update(IDsContract.IDsEntry.TABLE_NAME, values,null, null);
 //                ContentValues value2 = new ContentValues();
 //                value2.put(IDsContract.IDsEntry.TABLE_NAME,new_tablename);
 //                //db.update(IDsContract.IDsEntry.TABLE_NAME, value2,null, null);
 
-                    // String sql="ALTER TABLE '"+table_name+"' RENAME TO '"+new_tablename+"' ";
-                    // db2.execSQL(sql);
-                    //db.update(IDsContract.IDsEntry.TABLE_NAME, values, null, null);
+                            // String sql="ALTER TABLE '"+table_name+"' RENAME TO '"+new_tablename+"' ";
+                            // db2.execSQL(sql);
+                            //db.update(IDsContract.IDsEntry.TABLE_NAME, values, null, null);
 
-                    Toast.makeText(CourseList.this, "new names:\n" + new_courseName + "\n" + new_courseCode, Toast.LENGTH_SHORT).show();
-                    db.close();
-                    restartActivity();
-                }else {
-                    //Toast.makeText(CourseList.this, "Course name or course code already exist", Toast.LENGTH_LONG).show();
-                    new AlertDialog.Builder(CourseList.this)
-                            .setTitle("Name already exist")
-                            .setMessage("Course name or course code already exist.")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(CourseList.this, "new names:\n" + new_courseName + "\n" + new_courseCode, Toast.LENGTH_SHORT).show();
+                            db.close();
+                            restartActivity();
 
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    } else {
+                        if (isChecked == -1) {
+                            //do nothing
+                        } else {
+                            //Toast.makeText(CourseList.this, "Course name or course code already exist", Toast.LENGTH_LONG).show();
+                            new AlertDialog.Builder(CourseList.this)
+                                    .setTitle("Name already exist")
+                                    .setMessage("Course name or course code already exist.")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                }
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+                        }
+                    }
+
             }
 
         });

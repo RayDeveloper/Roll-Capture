@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,14 +51,14 @@ public class Register extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -95,6 +96,14 @@ public class Register extends AppCompatActivity {
 
         courseList = getIDs(table_name);
         IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
+        listView.setEmptyView(findViewById(android.R.id.empty));
+        //View emptyView = getLayoutInflater().inflate(R.layout.emptylist, null);
+        //addContentView(emptyView, listView.getLayoutParams());
+        //listView.setEmptyView(emptyView);
+//        View view = getLayoutInflater() .inflate(R.layout.emptylist, null);
+//        ViewGroup viewGroup= (ViewGroup)listView.getParent();
+//        viewGroup.addView(view);
+//        listView.setEmptyView(view);
         listView.setAdapter(adapter);
 
 //        Intent intent = new Intent();

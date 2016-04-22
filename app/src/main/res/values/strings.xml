@@ -143,6 +143,8 @@
     <string name="coursecode">Prefs</string>
     <string name="default_">default</string>
     <string name="course_heading"><u>Course Name</u></string>
+    <string name="empty">Empty</string>
+
     <string name="code_heading"><u>Course Code</u></string>
     <string name="Id_number_heading"><u>ID Number</u></string>
     <string name="Id_time_heading"><u>Time Scanned</u></string>

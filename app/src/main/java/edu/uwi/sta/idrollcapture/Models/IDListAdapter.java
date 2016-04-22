@@ -47,6 +47,7 @@ public class IDListAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup arg2) {
 
@@ -58,6 +59,8 @@ public class IDListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.idnumber_view, null);
+
+
 
         }
 

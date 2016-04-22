@@ -129,7 +129,7 @@ public class scan_home extends AppCompatActivity {
                 PackageManager pm = getApplicationContext().getPackageManager();
 
                 if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                    Toast.makeText(getApplicationContext(), "This device does not have camera.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "This device does not have a camera.", Toast.LENGTH_SHORT).show();
 
                 }else {
                     Intent intent = new Intent(scan_home.this, ContinuousCaptureActivity.class);
@@ -282,31 +282,32 @@ public class scan_home extends AppCompatActivity {
 
     public void openFile(String filename) {
 
+
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Student Roll Capture"+File.separator+filename+".txt");
-       // Toast.makeText(this,"Path: \n"+Environment.getExternalStorageDirectory() + File.separator + "Student Roll Capture"+File.separator+filename+".doc", Toast.LENGTH_LONG).show();
-        Intent i = new Intent();
-        i.setAction(android.content.Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.fromFile(file), "text/plain");
-        //startActivity(i);
-        //intent.setType("text/plain");
-        PackageManager pm = getPackageManager();
-        List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
-        if (activities.size() > 0) {
-            startActivity(i);
-        } else {
-            Toast.makeText(getApplicationContext(), "There is no app to open the file.", Toast.LENGTH_LONG).show();
+        if(file.exists()) {
+            // Toast.makeText(this,"Path: \n"+Environment.getExternalStorageDirectory() + File.separator + "Student Roll Capture"+File.separator+filename+".doc", Toast.LENGTH_LONG).show();
+            Intent i = new Intent();
+            i.setAction(android.content.Intent.ACTION_VIEW);
+            i.setDataAndType(Uri.fromFile(file), "text/plain");
+            //startActivity(i);
+            //intent.setType("text/plain");
+            PackageManager pm = getPackageManager();
+            List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+            if (activities.size() > 0) {
+                startActivity(i);
+            } else {
+                Toast.makeText(getApplicationContext(), "There is no app to open the file.", Toast.LENGTH_LONG).show();
 
-            // Do something else here. Maybe pop up a Dialog or Toast
-        }
+                // Do something else here. Maybe pop up a Dialog or Toast
+            }
 
-        //Toast.makeText(this,Environment.getExternalStorageDirectory(),filename +".txt", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,Environment.getExternalStorageDirectory(),filename +".txt", Toast.LENGTH_SHORT).show();
 //
 //        File file = new File(Environment.getExternalStorageDirectory(),filename+".txt");
 //        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 //        Uri uri = Uri.fromFile(file);
 //        intent.setDataAndType(uri, "text/plain");
 //        startActivity(intent);
-
 
 
 //        //File file = new File(Environment.getExternalStorageDirectory(),filename+".txt");
@@ -316,8 +317,6 @@ public class scan_home extends AppCompatActivity {
 //        intent.setData(uri);
 //        //intent.setType("text/plain"); // Optional
 //        startActivity(intent);
-
-
 
 
 //        File file = new File(Environment.getExternalStorageDirectory(),filename+".txt");
@@ -330,14 +329,10 @@ public class scan_home extends AppCompatActivity {
 //        intent.setData(uri);
 
 
+            //intent.setAction(android.content.Intent.ACTION_VIEW);
 
-
-
-
-        //intent.setAction(android.content.Intent.ACTION_VIEW);
-
-        //startActivity(intent);
-        //startActivity(Intent.createChooser(intent, "Open folder"));
+            //startActivity(intent);
+            //startActivity(Intent.createChooser(intent, "Open folder"));
 
 //        Intent intent = new Intent(Intent.ACTION_VIEW,
 //                Uri.parse("Student Roll Capture/"+filename+".txt"));
@@ -380,6 +375,9 @@ public class scan_home extends AppCompatActivity {
 //                + "Student Roll Capture");
 //        intent.setDataAndType(uri, "text/plain");
 //        startActivity(Intent.createChooser(intent, "Open folder"));
+        }else{
+            Toast.makeText(getApplicationContext(),"The file does not exist try exporting it first to create it.",Toast.LENGTH_LONG).show();
+        }
     }
 
 
