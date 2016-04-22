@@ -35,14 +35,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".EditCourse"
-            android:label="@string/title_activity_edit_course"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SelectDate"
-            android:label="@string/title_activity_select_date"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".scan_home"
             android:label="@string/title_activity_scan_home"
             android:parentActivityName=".CourseList"

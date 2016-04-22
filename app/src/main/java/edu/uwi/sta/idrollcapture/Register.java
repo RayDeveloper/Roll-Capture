@@ -32,8 +32,6 @@ import edu.uwi.sta.idrollcapture.Models.IDsDBHelper;
 import edu.uwi.sta.idrollcapture.Models.courses;
 
 public class Register extends AppCompatActivity {
-    String coursename;
-    String coursecode;
     TextView coursename_txtview;
     TextView coursecode_txtview;
     List<ID> courseList;
@@ -51,65 +49,20 @@ public class Register extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getPrefs();//get the preferences saved in scan_home
 
-
-
-       // Bundle bundle = getIntent().getExtras();
-        //if(bundle !=null) {
-//        if (bundle.containsKey("coursename")) {
-             //coursename = bundle.getString("coursename");
-             //coursecode = bundle.getString("coursecode");
-
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-         course_name = prefs.getString("coursename",null);//"No name defined" is the default value.
-         course_code = prefs.getString("coursecode",null);//"No name defined" is the default value.
-
-
-             coursename_txtview = (TextView) findViewById(R.id.coursename_reg);
-            coursename_txtview.setText(course_name);
-             coursecode_txtview = (TextView) findViewById(R.id.coursecode_reg);
-            coursecode_txtview.setText(course_code);
-
-
-
-             new_coursename= course_name.replaceAll("\\s+","_");
-             new_coursecode= course_code.replaceAll("\\s+","_");
-
-       // table_name=course_name+course_code;
-
-        table_name=new_coursename+new_coursecode;
-        Toast.makeText(Register.this,"tableName:\n"+table_name, Toast.LENGTH_SHORT).show();
-
-
-        //}
-        //Toast.makeText(Register.this,"TableName"+ table_name, Toast.LENGTH_SHORT).show();
 
         final ListView listView = (ListView) findViewById(R.id.register_lv);
 
        // courseList = getIDs(table_name);
         //IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
         listView.setEmptyView(findViewById(android.R.id.empty));
-        //View emptyView = getLayoutInflater().inflate(R.layout.emptylist, null);
-        //addContentView(emptyView, listView.getLayoutParams());
-        //listView.setEmptyView(emptyView);
-//        View view = getLayoutInflater() .inflate(R.layout.emptylist, null);
-//        ViewGroup viewGroup= (ViewGroup)listView.getParent();
-//        viewGroup.addView(view);
-//        listView.setEmptyView(view);
        // listView.setAdapter(adapter);
 
         new Thread(new Runnable() {
-            public void run() {
+            public void run() {//I hope this is correct
                 courseList = getIDs(table_name);
                 IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
                 listView.setAdapter(adapter);
@@ -122,32 +75,38 @@ public class Register extends AppCompatActivity {
             }
         }).start();
 
-//        Intent intent = new Intent();
-//        intent.putExtra("coursename", coursename);
-//        intent.putExtra("coursecode", coursecode);
-//        setResult(2, intent);
-//        finish();//finishing activity
+    }
+
+    public void getPrefs(){
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        course_name = prefs.getString("coursename",null);//"No name defined" is the default value.
+        course_code = prefs.getString("coursecode",null);//"No name defined" is the default value.
+
+
+        coursename_txtview = (TextView) findViewById(R.id.coursename_reg);
+        coursename_txtview.setText(course_name);
+        coursecode_txtview = (TextView) findViewById(R.id.coursecode_reg);
+        coursecode_txtview.setText(course_code);
+
+        new_coursename= course_name.replaceAll("\\s+","_");//replaces spaces with underscores
+        new_coursecode= course_code.replaceAll("\\s+","_");//replaces spaces with underscores
+
+
+        table_name=new_coursename+new_coursecode;//concatenates the two to make table name
 
     }
 
 
     public  List<ID> getIDs(String tablename){
         DBHelper mDbHelper = new DBHelper(Register.this);
-        // Gets the data repository in write mode
         final SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        //String selectQuery = "SELECT idnumber,time FROM "+ tablename ;
-        //Cursor cursor =db.rawQuery(selectQuery, null);
-        // Define a projection that specifies which columns from the database
-// you will actually use after this query.
+
         String[] projection = {
                 IDsContract.IDsEntry.COLUMN_NAME_idnumber,
                 IDsContract.IDsEntry.COLUMN_NAME_time
 
         };
 
-// How you want the results sorted in the resulting Cursor
-//        String sortOrder =
-//                IDsContract.IDsEntry.COLUMN_NAME_UPDATED + " DESC";
 
         Cursor cursor = db.query(
                 tablename,  // The table to query
@@ -158,14 +117,14 @@ public class Register extends AppCompatActivity {
                 null,                                     // don't filter by row groups
                 null                                 // The sort order
         );
-
+//using Cursor retrieve values
 
         List<ID> FavList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 ID list = new ID();
-                list.setID(cursor.getString(0));
-                list.setTime(cursor.getString(1));
+                list.setID(cursor.getString(0));//first column
+                list.setTime(cursor.getString(1));//second column
 
                 FavList.add(list);
             } while (cursor.moveToNext());
@@ -177,35 +136,7 @@ public class Register extends AppCompatActivity {
         return FavList;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int val=item.getItemId();
-//        if(val==R.id.home){
-//        //switch (item.getItemId()) {
-//            // Respond to the action bar's Up/Home button
-//            //case android.R.id.home:
-//                Intent intent = new Intent(Register.this, scan_home.class);
-//            //startActivity(intent);
-////            Bundle bundle = new Bundle();
-////            bundle.putString("coursename", coursename); // place the position of the selected item
-////            bundle.putString("coursecode", coursecode); // place the position of the selected item
-////            intent.putExtras(bundle);
-//            startActivity(intent);
-//                //return true;
-//       }
-//        return super.onOptionsItemSelected(item);
-//    }
 
-//@Override
-//public void onBackPressed(){
-//    Intent intent = new Intent(Register.this, scan_home.class);
-//    Bundle bundle = new Bundle();
-//    bundle.putString("coursename", coursename); // place the position of the selected item
-//    bundle.putString("coursecode", coursecode); // place the position of the selected item
-//    intent.putExtras(bundle);
-//    startActivity(intent);
-//
-//}
 
 
 }

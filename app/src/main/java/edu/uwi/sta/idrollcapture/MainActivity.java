@@ -35,18 +35,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        checkRequestPermission();//checks permissions when app is first launched
+        setUponClicks();//methods that houses all the onCLickListeners for buttons and textViews
 
-            }
-        });
-        checkRequestPermission();
 
+    }
+
+    public void setUponClicks(){
         final TextView viewCourses_txt= (TextView) findViewById(R.id.viewCourses_txt);
         viewCourses_txt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         final ImageView newCourse = (ImageView) findViewById(R.id.newCourse);
         newCourse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               // Intent intent = new Intent(MainActivity.this, Setup.class);
+                // Intent intent = new Intent(MainActivity.this, Setup.class);
                 Intent intent = new Intent(MainActivity.this, Setup.class);
                 startActivity(intent);
             }
@@ -115,9 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -143,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+//check permissions when activity is first launched
     public void checkRequestPermission(){
 
 
@@ -175,30 +169,19 @@ public class MainActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED){
-//        switch(requestCode){
-//            case REQUEST_NETWORK_ACCESS:{
-            //if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-            //reload my activity
-            //Toast.makeText(this,"Granted",Toast.LENGTH_LONG).show();
-
-//                    Intent i = getIntent();
-//                    finish();
-//                    startActivity(i);
         }else{
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Permission Denied")
                     .setMessage(getString(R.string.dialog_permissions))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                            finish();//closes off the app if it is not granted
 
                         }
                     })
                     .setIcon(R.drawable.lock)
                     .show();
-            //Toast.makeText(this,"The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end." ,Toast.LENGTH_LONG).show();
 
-           // finish();
         }
 
     }

@@ -35,12 +35,10 @@ import edu.uwi.sta.idrollcapture.Models.DBHelper;
 import edu.uwi.sta.idrollcapture.Models.IDsContract;
 import edu.uwi.sta.idrollcapture.Models.SqlHandler;
 import edu.uwi.sta.idrollcapture.Models.courses;
-
+//Course List page where all the courses and course codes are displayed.
 public class CourseList extends AppCompatActivity {
     SqlHandler sqlHandler;
     List<courses> courseList;
-    TextView coursename_view;
-    TextView coursecode_view;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
 
     String courseName;
@@ -50,11 +48,6 @@ public class CourseList extends AppCompatActivity {
     int isAltered=0;
     String new_newtable;
     int x=0;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +55,8 @@ public class CourseList extends AppCompatActivity {
         setContentView(R.layout.activity_course_list);
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent= new Intent(CourseList.this,Setup.class);
-//                startActivity(intent);
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-//            }
-//        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         //Toast.makeText(CourseList.this, "Long press for options.", Toast.LENGTH_SHORT).show();
-
-
         sqlHandler = new SqlHandler(this);
 
         final ListView listView = (ListView) findViewById(R.id.courseList_view);
@@ -86,7 +65,7 @@ public class CourseList extends AppCompatActivity {
         listView.setEmptyView(findViewById(android.R.id.empty));
         //listView.setAdapter(adapter);
         new Thread(new Runnable() {
-            public void run() {
+            public void run() {//I hope this is correct
                 courseList = help.getCourse();
                 final CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
                 listView.setAdapter(adapter);
@@ -103,159 +82,63 @@ public class CourseList extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-
-
-
-                //coursename_view = (TextView) findViewById(R.id.coursename_txtview);
-                //coursecode_view = (TextView) findViewById(R.id.coursecode_txtview);
-
                 courses selectedFromList =(courses) (listView.getItemAtPosition(position));
-
                  courseName= selectedFromList.getCourse();
                courseCode = selectedFromList.getCode();
-
-
-
-
-                //course_name=coursename_view.getText().toString();
-                //course_code=coursecode_view.getText().toString();
-               //Toast.makeText(CourseList.this, "List string value :\n" +courseName+"\n"+courseCode, Toast.LENGTH_SHORT).show();
-
-
-                //textView.getText().toString();
-                Intent i = new Intent(CourseList.this, scan_home.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("coursename",courseName); // place the position of the selected item
-                bundle.putString("coursecode",courseCode); // place the position of the selected item
-                i.putExtras(bundle);
-                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                editor.putString("coursename", courseName);
-                editor.putString("coursecode", courseCode);
-                editor.apply();
-                startActivity(i);
-
-
-                //int value = (int)adapter.getItemAtPosition(position);s
-//                String selectedFromList =(String) (adapter.getItemAtPosition(position));
-                //Toast.makeText(CourseList.this,"Pos:"+position, Toast.LENGTH_SHORT).show();
-                //Toast.makeText(CourseList.this,coursecode_view.getText().toString(), Toast.LENGTH_SHORT).show();
-
-
-                // assuming string and if you want to get the value on click of list item
-                // do what you intend to do on click of listview row
+                setPrfs();//sets the preferences to be transfered
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {//long press gives different options
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-
-
                 courses selectedFromList =(courses) (listView.getItemAtPosition(pos));
 
                 courseName= selectedFromList.getCourse();
                 courseCode = selectedFromList.getCode();
-                String new_coursename=courseName.replaceAll("\\s+","_");
-                String new_coursecode=courseCode.replaceAll("\\s+","_");
+                String new_coursename=courseName.replaceAll("\\s+","_");//replaces spaces with underscores
+                String new_coursecode=courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
                 oldTable=new_coursename+new_coursecode;
-                //oldTable=courseName+courseCode;
-
-
-
-//                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-//                editor.putString("coursename", courseName);
-//                editor.putString("coursecode", courseCode);
-//                editor.apply();
-
-
-
-                //Toast.makeText(CourseList.this,"CourseName:"+courseName, Toast.LENGTH_SHORT).show();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(CourseList.this);
-                //builder.setTitle("Make your selection");
-                builder.setItems(R.array.options, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        // Do something with the selection
-                        if(item== 0){
-                            deleteCourse();
-                            //Toast.makeText(CourseList.this,"Choice 0", Toast.LENGTH_SHORT).show();
-
-                        }
-                        if(item==1){
-                            editCourse();
-                            //Toast.makeText(CourseList.this,"Edit Course", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.setCanceledOnTouchOutside(true);
-                alert.show();
-
-                //also delete table too
-//                new AlertDialog.Builder(CourseList.this)
-//                        .setTitle("Delete Course")
-//                        .setMessage("Are you sure you want to delete this course? The register will also be deleted.")
-//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                DBHelper mDbHelper = new DBHelper(CourseList.this);
-//                                final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-//                                //delete by course code instead or name
-//                                //fix delete to use the correct way of deleting
-//                                String sql = "DELETE FROM " +
-//                                        " course " +
-//                                        " WHERE " + "coursename" +
-//                                        " LIKE '" + courseName + "'"+" and "+ " coursecode "+ " LIKE '" + courseCode+ "' ;";
-//                                db.execSQL(sql);
-//                                String new_coursename=courseName.replaceAll("\\s+","");
-//                                String new_coursecode=courseCode.replaceAll("\\s+","");
-//                                String table_name=new_coursename+new_coursecode;
-//                                String delsql="DROP TABLE '"+ table_name +"';";
-//                                db.execSQL(delsql);
-//                                db.close();
-//                                restartActivity();
-//
-//                                //Toast.makeText(CourseList.this,"Course deleted at :\n"+"POS: "+newpos+"\n"+"ID: "+id, Toast.LENGTH_SHORT).show();
-//                                Toast.makeText(CourseList.this, "Course deleted at :\n" + courseName, Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                // do nothing
-//                            }
-//                        })
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .show();
-                //I have to add a dialog box to confirm deleting.
-                //coursename_view = (TextView) findViewById(R.id.coursename_txtview);
-                //coursecode_view = (TextView) findViewById(R.id.coursecode_txtview);
-
-
-
-                //int newpos = pos + 1;
-
-//                DBHelper mDbHelper = new DBHelper(CourseList.this);
-//                final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-////delete by course code instead or name
-//                //fix delete to use the correct way of deleting
-//                String sql = "DELETE FROM " +
-//                        " course " +
-//                        " WHERE " + "coursename" +
-//                        " LIKE '" + courseName + "';";
-//                db.execSQL(sql);
-//                restartActivity();
-//
-//                //Toast.makeText(CourseList.this,"Course deleted at :\n"+"POS: "+newpos+"\n"+"ID: "+id, Toast.LENGTH_SHORT).show();
-//                Toast.makeText(CourseList.this, "Course deleted at :\n" + courseName, Toast.LENGTH_SHORT).show();
+                Listdialog();//list out the options for when long press is activated
 
 
                 return true;
             }
         });
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+    }
+
+    public  void setPrfs(){
+        Intent i = new Intent(CourseList.this, scan_home.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("coursename",courseName); // place the position of the selected item
+        bundle.putString("coursecode",courseCode); // place the position of the selected item
+        i.putExtras(bundle);
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();//saves these value across the whole app  until a next course is selected
+        editor.putString("coursename", courseName);
+        editor.putString("coursecode", courseCode);
+        editor.apply();
+        startActivity(i);
+    }
+
+    public void Listdialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(CourseList.this);
+        //builder.setTitle("Make your selection");
+        builder.setItems(R.array.options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                if(item== 0){
+                    deleteCourse();
+                }
+                if(item==1){
+                    editCourse();
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.setCanceledOnTouchOutside(true);//allows the user to touch outside to dismiss
+        alert.show();
     }
 
     public void deleteCourse(){
@@ -275,15 +158,13 @@ public class CourseList extends AppCompatActivity {
                                 " = '" + courseName + "'"+" and "+ " coursecode "+ " = '" + courseCode+ "' ;";
                         db.execSQL(sql);
 
-                        String new_coursename=courseName.replaceAll("\\s+","_");
-                        String new_coursecode=courseCode.replaceAll("\\s+","_");
+                        String new_coursename=courseName.replaceAll("\\s+","_");//replaces spaces with underscores
+                        String new_coursecode=courseCode.replaceAll("\\s+","_");//replaces spaces with underscores
                          String table_name=new_coursename+new_coursecode;
                         String delsql="DROP TABLE '"+ table_name +"';";
                         db.execSQL(delsql);
                         db.close();
                         restartActivity();
-
-                        //Toast.makeText(CourseList.this,"Course deleted at :\n"+"POS: "+newpos+"\n"+"ID: "+id, Toast.LENGTH_SHORT).show();
                         Toast.makeText(CourseList.this, "Course deleted at :\n" + courseName, Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -302,26 +183,18 @@ public class CourseList extends AppCompatActivity {
         alertDialog.setMessage("Enter new names.");
         final EditText coursename = new EditText(CourseList.this);
         final EditText coursecode = new EditText(CourseList.this);
-        coursename.setText(courseName);
-        coursecode.setText(courseCode);
-        String new_coursename = courseName.replaceAll("\\s+", "_");
-        String new_coursecode = courseCode.replaceAll("\\s+", "_");
+        coursename.setText(courseName);//sets the edittext tothe old values
+        coursecode.setText(courseCode);//sets the edittext tothe old values
+        String new_coursename = courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
+        String new_coursecode = courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
         final String table_name = new_coursename+new_coursecode;
-       // final String table_name = courseName+courseCode;
 
-
-        // quantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        // lot.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
-        //Project=arr[0].toString();
-        // Item=arr[1].toString();
-
+        //programmatically creating edittext to allow course to be edited
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.addView(coursename);
         ll.addView(coursecode);
         alertDialog.setView(ll);
-
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             DBHelper mDbHelper = new DBHelper(CourseList.this);
@@ -330,72 +203,42 @@ public class CourseList extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 String new_courseName = coursename.getText().toString();
                 String new_courseCode = coursecode.getText().toString();
-                String new_newcoursename = new_courseName.replaceAll("\\s+", "_");
-                String new_newcoursecode = new_courseCode.replaceAll("\\s+", "_");
+                String new_newcoursename = new_courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
+                String new_newcoursecode = new_courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
                  new_newtable=new_newcoursename+new_newcoursecode;
-                //new_newtable=new_courseName+new_courseCode;
 
 
-                int cmp = oldTable.compareTo(new_newtable);
+                int cmp = oldTable.compareTo(new_newtable);//compares the new table and old table with case
                 if(cmp==0) {
-                //if(new_courseName.equals(courseName)&& new_courseCode.equals(courseCode)) {
-                    isAltered=1;
-                    //x++;
-                     isChecked=-1;
-                   // Toast.makeText(CourseList.this,"isAltered=1", Toast.LENGTH_SHORT).show();
-
+                    //isAltered=1;
+                     isChecked=-1;//this means they are equal
                 }else {
-                     isChecked = duplicateCheck(new_courseName, new_courseCode);
+                     isChecked = duplicateCheck(new_courseName, new_courseCode);//not == then do a duplicateCheck
                  }
-                    if (isChecked == 1) {
+                    if (isChecked == 1) {//not duplicate so proceed with adding to database
 
-                        String new_coursename = new_courseName.replaceAll("\\s+", "_");
-                        String new_coursecode = new_courseCode.replaceAll("\\s+", "_");
+                        String new_coursename = new_courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
+                        String new_coursecode = new_courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
 
                         String new_tablename = new_coursename + new_coursecode;
-                        //String new_tablename = new_courseName+new_courseCode;
-
-                        // String sql="Update course set coursename = '" + new_courseName + "' and coursecode = '" + new_courseCode + "' where coursecode = '" + courseCode +"' ";
-                        //db.execSQL(sql);
-                        //Toast.makeText(CourseList.this,sql, Toast.LENGTH_LONG).show();
 
                             ContentValues values = new ContentValues();
                             values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME, new_courseName);
                             values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE, new_courseCode);
                             db.update(CourseContract.CourseEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
 
-                            int oldcmp=oldTable.compareToIgnoreCase(new_tablename);
-                            if(oldcmp!=0) {
+                            int oldcmp=oldTable.compareToIgnoreCase(new_tablename);//compares to see if there is a change
+                            if(oldcmp!=0) {//if != 0 change table name
                                 String sql = "ALTER TABLE '" + table_name + "' RENAME TO '" + new_tablename + "' ";
                                 db.execSQL(sql);
                             }
-                            //Toast.makeText(CourseList.this,"tableName:"+CourseContract.CourseEntry.TABLE_NAME, Toast.LENGTH_SHORT).show();
-
-                            //db.update(IDsContract.IDsEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
-
-                            //db.update(table_name, values, "coursename='" + courseName + "'", null);
-
-                            // IDsDBHelper mDbHelper2 = new IDsDBHelper(getApplicationContext(),table_name);
-                            //final SQLiteDatabase db2 = mDbHelper2.getWritableDatabase();
-
-                            //db.update(IDsContract.IDsEntry.TABLE_NAME, values,null, null);
-//                ContentValues value2 = new ContentValues();
-//                value2.put(IDsContract.IDsEntry.TABLE_NAME,new_tablename);
-//                //db.update(IDsContract.IDsEntry.TABLE_NAME, value2,null, null);
-
-                            // String sql="ALTER TABLE '"+table_name+"' RENAME TO '"+new_tablename+"' ";
-                            // db2.execSQL(sql);
-                            //db.update(IDsContract.IDsEntry.TABLE_NAME, values, null, null);
-
-                            //Toast.makeText(CourseList.this, "new names:\n" + new_courseName + "\n" + new_courseCode, Toast.LENGTH_SHORT).show();
                             db.close();
-                            restartActivity();
+                            restartActivity();//restart Activity to show changes
 
                     } else {
                         if (isChecked == -1) {
                             //do nothing
                         } else {
-                            //Toast.makeText(CourseList.this, "Course name or course code already exist", Toast.LENGTH_LONG).show();
                             new AlertDialog.Builder(CourseList.this)
                                     .setTitle("Name already exist")
                                     .setMessage("Course name or course code already exist.")
@@ -423,83 +266,21 @@ public class CourseList extends AppCompatActivity {
         AlertDialog alert = alertDialog.create();
         alert.show();
 
-
-
-//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(CourseList.this);
-//        alertDialog.setTitle("New Course");
-//        alertDialog.setMessage("Enter new course name");
-//
-//        final EditText input = new EditText(CourseList.this);
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.MATCH_PARENT);
-//        input.setLayoutParams(lp);
-//        alertDialog.setView(input);
-//        alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-//
-//        alertDialog.setPositiveButton("YES",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                      String  coursename = input.getText().toString();
-//                        Toast.makeText(CourseList.this, coursename, Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                });
-//
-//        alertDialog.setNegativeButton("NO",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//        alertDialog.show();
     }
 
     public int duplicateCheck(String coursename,String coursecode){
-        //Toast.makeText(Setup.this,"Checking for duplicates", Toast.LENGTH_SHORT).show();
 
         DBHelper mDbHelper = new DBHelper(CourseList.this);
         final SQLiteDatabase db = mDbHelper.getReadableDatabase();
         //String selectQuery = "SELECT * FROM course where coursename = '"+ coursename + "'"+" and coursecode = '"+ coursecode + "' ; " ;
          Cursor cursor = db.rawQuery ("SELECT * FROM course where coursename = ? and coursecode = ?  ",new String[] {String.valueOf(coursename),String.valueOf(coursecode)})  ;
 
-
-
-//        = db.rawQuery("select latitude,longitude from savedlocation where latitude = ? and
-//                longitude = ? ", new String[] {String.valueOf(latitude),String.valueOf(longitude)});
-//        String[] projection = {
-//                CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME,
-//                CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE
-//
-//        };
-//        String selection={
-//          CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME +"LIKE ?"+
-//          + CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE+"LIKE ?"
-//        };
-
-//        String[]slectionArgs= {
-//                String.valueOf(coursename),
-//                String.valueOf(coursecode),
-//        };
-//        Cursor cursor = db.query(
-//                CourseContract.CourseEntry.TABLE_NAME,  // The table to query
-//                projection,                               // The columns to return
-//                selection,                                // The columns for the WHERE clause
-//                slectionArgs,                            // The values for the WHERE clause
-//                null,                                     // don't group the rows
-//                null,                                     // don't filter by row groups
-//                null                                 // The sort order
-//        );
-                //Cursor cursor = db.rawQuery(selectQuery, null);
         List<String> checkList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 String db_coursename= cursor.getString(cursor.getColumnIndex("coursename"));
                 String db_coursecode= cursor.getString(cursor.getColumnIndex("coursecode"));
-                //Toast.makeText(Setup.this,db_coursename+ "\n"+db_coursecode , Toast.LENGTH_SHORT).show();
                 if(db_coursename.equals(coursename)&& db_coursecode.equals(coursecode)){
-                    //Toast.makeText(Setup.this, "comparision "+"\n"+"\n"+"\n" , Toast.LENGTH_SHORT).show();
                     return 0;//already in list
                 }
             } while (cursor.moveToNext());
@@ -512,7 +293,7 @@ public class CourseList extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.scanhome_menuitems, menu);
+        inflater.inflate(R.menu.scanhome_menuitems, menu);//a different menu that offers more options
         return true;
     }
 
@@ -531,7 +312,6 @@ public class CourseList extends AppCompatActivity {
                         })
                         .setIcon(R.drawable.signs)
                         .show();
-                //Toast.makeText(scan_home.this,"Settings Selected",Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
@@ -544,29 +324,11 @@ public class CourseList extends AppCompatActivity {
 
 
 
-    private void restartActivity() {
+    private void restartActivity() {//restartActiivty method use to see changes when it restarts.
         Intent intent = getIntent();
         finish();
         startActivity(intent);
     }
 
 
-//    @Override
-//    public void onBackPressed() {
-//
-//        Intent intent = new Intent(CourseList.this, MainActivity.class);
-//        //startActivity(intent);
-////            Bundle bundle = new Bundle();
-////            bundle.putString("coursename", coursename); // place the position of the selected item
-////            bundle.putString("coursecode", coursecode); // place the position of the selected item
-////            intent.putExtras(bundle);
-////            //startActivityForResult(intent, 2);
-//        startActivity(intent);
-//
-//        super.onBackPressed();
-//    }
-
 }
-
-
-
