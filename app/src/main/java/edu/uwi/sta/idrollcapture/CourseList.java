@@ -32,6 +32,7 @@ import java.util.List;
 import edu.uwi.sta.idrollcapture.Models.CourseContract;
 import edu.uwi.sta.idrollcapture.Models.CourseListAdapter;
 import edu.uwi.sta.idrollcapture.Models.DBHelper;
+import edu.uwi.sta.idrollcapture.Models.IDsContract;
 import edu.uwi.sta.idrollcapture.Models.SqlHandler;
 import edu.uwi.sta.idrollcapture.Models.courses;
 
@@ -46,6 +47,9 @@ public class CourseList extends AppCompatActivity {
     String courseCode;
     String oldTable;
     int isChecked=-1;
+    int isAltered=0;
+    String new_newtable;
+    int x=0;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -71,17 +75,31 @@ public class CourseList extends AppCompatActivity {
 //        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Toast.makeText(CourseList.this,"Long press for options.", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(CourseList.this, "Long press for options.", Toast.LENGTH_SHORT).show();
 
 
         sqlHandler = new SqlHandler(this);
 
         final ListView listView = (ListView) findViewById(R.id.courseList_view);
-        DBHelper help = new DBHelper(getBaseContext());
-        courseList = help.getCourse();
-        CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
+        final DBHelper help = new DBHelper(getBaseContext());
+        //final CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
         listView.setEmptyView(findViewById(android.R.id.empty));
-        listView.setAdapter(adapter);
+        //listView.setAdapter(adapter);
+        new Thread(new Runnable() {
+            public void run() {
+                courseList = help.getCourse();
+                final CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
+                listView.setAdapter(adapter);
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //adapter.notifyDataSetChanged();
+
+                    }
+                });
+            }
+        }).start();
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
@@ -137,9 +155,11 @@ public class CourseList extends AppCompatActivity {
 
                 courseName= selectedFromList.getCourse();
                 courseCode = selectedFromList.getCode();
-                String new_coursename=courseName.replaceAll("\\s+","");
-                String new_coursecode=courseCode.replaceAll("\\s+","");
+                String new_coursename=courseName.replaceAll("\\s+","_");
+                String new_coursecode=courseCode.replaceAll("\\s+","_");
                 oldTable=new_coursename+new_coursecode;
+                //oldTable=courseName+courseCode;
+
 
 
 //                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
@@ -252,10 +272,11 @@ public class CourseList extends AppCompatActivity {
                         String sql = "DELETE FROM " +
                                 " course " +
                                 " WHERE " + "coursename" +
-                                " LIKE '" + courseName + "'"+" and "+ " coursecode "+ " LIKE '" + courseCode+ "' ;";
+                                " = '" + courseName + "'"+" and "+ " coursecode "+ " = '" + courseCode+ "' ;";
                         db.execSQL(sql);
-                        String new_coursename=courseName.replaceAll("\\s+","");
-                        String new_coursecode=courseCode.replaceAll("\\s+","");
+
+                        String new_coursename=courseName.replaceAll("\\s+","_");
+                        String new_coursecode=courseCode.replaceAll("\\s+","_");
                          String table_name=new_coursename+new_coursecode;
                         String delsql="DROP TABLE '"+ table_name +"';";
                         db.execSQL(delsql);
@@ -271,21 +292,23 @@ public class CourseList extends AppCompatActivity {
                         // do nothing
                     }
                 })
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(R.drawable.delete)
                 .show();
 
     }
     public void editCourse() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(CourseList.this);
-        alertDialog.setTitle("Change course name and code");
-        alertDialog.setMessage("Enter Password");
+        alertDialog.setTitle("Change course name and code.");
+        alertDialog.setMessage("Enter new names.");
         final EditText coursename = new EditText(CourseList.this);
         final EditText coursecode = new EditText(CourseList.this);
         coursename.setText(courseName);
         coursecode.setText(courseCode);
-        String new_coursename = courseName.replaceAll("\\s+", "");
-        String new_coursecode = courseCode.replaceAll("\\s+", "");
-        final String table_name = new_coursename + new_coursecode;
+        String new_coursename = courseName.replaceAll("\\s+", "_");
+        String new_coursecode = courseCode.replaceAll("\\s+", "_");
+        final String table_name = new_coursename+new_coursecode;
+       // final String table_name = courseName+courseCode;
+
 
         // quantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         // lot.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -307,21 +330,31 @@ public class CourseList extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 String new_courseName = coursename.getText().toString();
                 String new_courseCode = coursecode.getText().toString();
-                String new_newcoursename = new_courseName.replaceAll("\\s+", "");
-                String new_newcoursecode = new_courseCode.replaceAll("\\s+", "");
-                String new_newtable=new_newcoursename+new_newcoursecode;
+                String new_newcoursename = new_courseName.replaceAll("\\s+", "_");
+                String new_newcoursecode = new_courseCode.replaceAll("\\s+", "_");
+                 new_newtable=new_newcoursename+new_newcoursecode;
+                //new_newtable=new_courseName+new_courseCode;
 
-                if(oldTable.equals(new_newtable)) {
+
+                int cmp = oldTable.compareTo(new_newtable);
+                if(cmp==0) {
                 //if(new_courseName.equals(courseName)&& new_courseCode.equals(courseCode)) {
+                    isAltered=1;
+                    //x++;
                      isChecked=-1;
-                 }else {
+                   // Toast.makeText(CourseList.this,"isAltered=1", Toast.LENGTH_SHORT).show();
+
+                }else {
                      isChecked = duplicateCheck(new_courseName, new_courseCode);
                  }
                     if (isChecked == 1) {
 
-                        String new_coursename = new_courseName.replaceAll("\\s+", "");
-                        String new_coursecode = new_courseCode.replaceAll("\\s+", "");
+                        String new_coursename = new_courseName.replaceAll("\\s+", "_");
+                        String new_coursecode = new_courseCode.replaceAll("\\s+", "_");
+
                         String new_tablename = new_coursename + new_coursecode;
+                        //String new_tablename = new_courseName+new_courseCode;
+
                         // String sql="Update course set coursename = '" + new_courseName + "' and coursecode = '" + new_courseCode + "' where coursecode = '" + courseCode +"' ";
                         //db.execSQL(sql);
                         //Toast.makeText(CourseList.this,sql, Toast.LENGTH_LONG).show();
@@ -330,9 +363,12 @@ public class CourseList extends AppCompatActivity {
                             values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME, new_courseName);
                             values.put(CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE, new_courseCode);
                             db.update(CourseContract.CourseEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
-                            String sql = "ALTER TABLE '" + table_name + "' RENAME TO '" + new_tablename + "' ";
-                            db.execSQL(sql);
 
+                            int oldcmp=oldTable.compareToIgnoreCase(new_tablename);
+                            if(oldcmp!=0) {
+                                String sql = "ALTER TABLE '" + table_name + "' RENAME TO '" + new_tablename + "' ";
+                                db.execSQL(sql);
+                            }
                             //Toast.makeText(CourseList.this,"tableName:"+CourseContract.CourseEntry.TABLE_NAME, Toast.LENGTH_SHORT).show();
 
                             //db.update(IDsContract.IDsEntry.TABLE_NAME, values, "coursename='" + courseName + "'", null);
@@ -351,7 +387,7 @@ public class CourseList extends AppCompatActivity {
                             // db2.execSQL(sql);
                             //db.update(IDsContract.IDsEntry.TABLE_NAME, values, null, null);
 
-                            Toast.makeText(CourseList.this, "new names:\n" + new_courseName + "\n" + new_courseCode, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(CourseList.this, "new names:\n" + new_courseName + "\n" + new_courseCode, Toast.LENGTH_SHORT).show();
                             db.close();
                             restartActivity();
 
@@ -368,7 +404,7 @@ public class CourseList extends AppCompatActivity {
 
                                         }
                                     })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .setIcon(R.drawable.icon)
                                     .show();
 
                         }
@@ -424,9 +460,38 @@ public class CourseList extends AppCompatActivity {
         //Toast.makeText(Setup.this,"Checking for duplicates", Toast.LENGTH_SHORT).show();
 
         DBHelper mDbHelper = new DBHelper(CourseList.this);
-        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        String selectQuery = "SELECT * FROM course where coursename = '"+ coursename + "'"+" and coursecode = '"+ coursecode + "' ; " ;
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        final SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        //String selectQuery = "SELECT * FROM course where coursename = '"+ coursename + "'"+" and coursecode = '"+ coursecode + "' ; " ;
+         Cursor cursor = db.rawQuery ("SELECT * FROM course where coursename = ? and coursecode = ?  ",new String[] {String.valueOf(coursename),String.valueOf(coursecode)})  ;
+
+
+
+//        = db.rawQuery("select latitude,longitude from savedlocation where latitude = ? and
+//                longitude = ? ", new String[] {String.valueOf(latitude),String.valueOf(longitude)});
+//        String[] projection = {
+//                CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME,
+//                CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE
+//
+//        };
+//        String selection={
+//          CourseContract.CourseEntry.COLUMN_NAME_COURSE_NAME +"LIKE ?"+
+//          + CourseContract.CourseEntry.COLUMN_NAME_COURSE_CODE+"LIKE ?"
+//        };
+
+//        String[]slectionArgs= {
+//                String.valueOf(coursename),
+//                String.valueOf(coursecode),
+//        };
+//        Cursor cursor = db.query(
+//                CourseContract.CourseEntry.TABLE_NAME,  // The table to query
+//                projection,                               // The columns to return
+//                selection,                                // The columns for the WHERE clause
+//                slectionArgs,                            // The values for the WHERE clause
+//                null,                                     // don't group the rows
+//                null,                                     // don't filter by row groups
+//                null                                 // The sort order
+//        );
+                //Cursor cursor = db.rawQuery(selectQuery, null);
         List<String> checkList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -464,7 +529,7 @@ public class CourseList extends AppCompatActivity {
 
                             }
                         })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(R.drawable.signs)
                         .show();
                 //Toast.makeText(scan_home.this,"Settings Selected",Toast.LENGTH_SHORT).show();
                 return true;

@@ -102,9 +102,9 @@ public class scan_home extends AppCompatActivity {
 //        if (bundle.containsKey("coursename")) {
             coursename = bundle.getString("coursename");
             coursecode = bundle.getString("coursecode");
-            String new_coursename = coursename.replaceAll("\\s+", "");
-            String new_coursecode = coursecode.replaceAll("\\s+", "");
-            filename = new_coursename + new_coursecode;
+            String new_coursename = coursename.replaceAll("\\s+", "_");
+            String new_coursecode = coursecode.replaceAll("\\s+", "_");
+            filename = new_coursename+new_coursecode;
 
 //            TextView coursename_txtview = (TextView) findViewById(R.id.coursename_txtview);
 //            coursename_txtview.setText(coursename);
@@ -129,7 +129,18 @@ public class scan_home extends AppCompatActivity {
                 PackageManager pm = getApplicationContext().getPackageManager();
 
                 if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                    Toast.makeText(getApplicationContext(), "This device does not have a camera.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "This device does not have a camera.", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(scan_home.this)
+                            .setTitle("Camera missing ")
+                            .setMessage("This device has no camera.")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //finish();
+
+                                }
+                            })
+                            .setIcon(R.drawable.icon)
+                            .show();
 
                 }else {
                     Intent intent = new Intent(scan_home.this, ContinuousCaptureActivity.class);
@@ -170,7 +181,7 @@ public class scan_home extends AppCompatActivity {
                 //checkRequestPermission2();
                 new AlertDialog.Builder(scan_home.this)
                         .setTitle("Export Register")
-                        .setMessage("Are you sure you want to export the register.It is advised that you export after every roll taking so at the end you can see the days.This may take a while depending on the number of students scanned.\nThe directory is in the Local Storage->Student Roll Capture")
+                        .setMessage(getString(R.string.dialog_export))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 DBHelper mDbHelper = new DBHelper(scan_home.this);
@@ -196,6 +207,21 @@ public class scan_home extends AppCompatActivity {
                                 }
                                 TotalIDs = TotalIDs + numberofIDS;
                                 writeToFile("Total Number of Students: " + TotalIDs, filename);
+                                cursor.close();
+
+
+//                                new AlertDialog.Builder(scan_home.this)
+//                                        .setTitle("Export Status")
+//                                        .setMessage("Export Completed")
+//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                                            public void onClick(DialogInterface dialog, int which) {
+//                                                //finish();
+//
+//                                            }
+//                                        })
+//                                        .setIcon(R.drawable.export2)
+//                                        .show();
+
 
                                 //DBHelper mDbHelper = new DBHelper(CourseList.this);
                                 //final SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -223,12 +249,17 @@ public class scan_home extends AppCompatActivity {
                                 // do nothing
                             }
                         })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(R.drawable.export2)
                         .show();
+
+
 
             }
 
+
+
         });
+
 
         final ImageButton viewFolder = (ImageButton) findViewById(R.id.folder);
         viewFolder.setOnClickListener(new View.OnClickListener() {
@@ -255,6 +286,20 @@ public class scan_home extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    public void dialog(){
+        new AlertDialog.Builder(scan_home.this)
+                .setTitle("Export Status")
+                .setMessage("Export Completed")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+
+                    }
+                })
+                .setIcon(R.drawable.export2)
+                .show();
+    }
+
     public void writeToFile(String data, String filename) {
 
         String fileName = filename + ".txt";//like 2016_01_12.txt
@@ -278,6 +323,12 @@ public class scan_home extends AppCompatActivity {
             e.printStackTrace();
 
         }
+        //Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+
+
+
+
+
     }
 
     public void openFile(String filename) {
@@ -296,9 +347,20 @@ public class scan_home extends AppCompatActivity {
             if (activities.size() > 0) {
                 startActivity(i);
             } else {
-                Toast.makeText(getApplicationContext(), "There is no app to open the file.", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "There is no app to open the file.", Toast.LENGTH_LONG).show();
 
                 // Do something else here. Maybe pop up a Dialog or Toast
+                new AlertDialog.Builder(scan_home.this)
+                        .setTitle("No app available ")
+                        .setMessage("There is no app to open this file.")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //finish();
+
+                            }
+                        })
+                        .setIcon(R.drawable.icon)
+                        .show();
             }
 
             //Toast.makeText(this,Environment.getExternalStorageDirectory(),filename +".txt", Toast.LENGTH_SHORT).show();
@@ -377,6 +439,7 @@ public class scan_home extends AppCompatActivity {
 //        startActivity(Intent.createChooser(intent, "Open folder"));
         }else{
             Toast.makeText(getApplicationContext(),"The file does not exist try exporting it first to create it.",Toast.LENGTH_LONG).show();
+            //change to dialog
         }
     }
 
@@ -426,14 +489,14 @@ public class scan_home extends AppCompatActivity {
         }else{
             new AlertDialog.Builder(scan_home.this)
                     .setTitle("Permission Denied")
-                    .setMessage("The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end.")
+                    .setMessage(getString(R.string.dialog_permissions))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
 
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(R.drawable.lock)
                     .show();
             //Toast.makeText(this,"The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end." ,Toast.LENGTH_LONG).show();
 

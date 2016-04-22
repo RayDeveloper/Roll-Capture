@@ -5,7 +5,7 @@
     <string name="action_help">Help</string>
     <string name="title_activity_scan_home">Course home</string>
     <string name="title_activity_course_list">Course List</string>
-    <string name="title_activity_setup">Add a course</string>
+    <string name="title_activity_setup">Add Course</string>
     <string name="title_activity_edit_course">Edit course</string>
     <string name="title_activity_select_date">SelectDate</string>
     <string name="app_picker_name">Applications</string>
@@ -150,6 +150,22 @@
     <string name="Id_time_heading"><u>Time Scanned</u></string>
     <string name="title_activity_splash">splash</string>
     <string name="splash">Student Roll Capture</string>
+    <string name="toast_scan">ID number already in list</string>
+    <string name="dialog_about">This project was done by:\n
+             Raydon Davis-813117991\n
+             Kylie  Soogrim-811000178\n
+            Leslie Yearwood-806002984\n
+            Annastacy Mohan-809000726
+        \nThank you for downloading this app.</string>
+
+    <string name="dialog_permissions">The app wasw not granted permission,it may not function correctly if permission is not given.</string>
+
+    <string name="dialog_export">Are you sure you want to export the register.
+    It may take a while depending on the number of students in it.
+    It is advisable to export at the end of every session.\n
+    Export location:\nLocal Storage/Student Roll Capture.</string>
+
+
 
     <string-array name="options">
         <item>Delete Course</item>

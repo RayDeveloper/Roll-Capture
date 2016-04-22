@@ -15,87 +15,102 @@
     tools:showIn="@layout/activity_scan_home"
     android:clickable="false">
 
-    <ImageButton
-        android:layout_width="100dp"
+
+    <FrameLayout
+        android:layout_width="500dp"
+        android:layout_height="200dp"
+        android:layout_x="25dp"
+        android:layout_y="57dp">
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/StartCamera"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/camera"
+            android:layout_below="@+id/coursecode_txtview"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="left|top"
+            android:layout_x="102dp"
+            android:layout_y="58dp" />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/Register"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/schedule"
+            android:layout_below="@+id/coursecode_txtview"
+            android:layout_toRightOf="@+id/coursecode_txtview"
+            android:layout_toEndOf="@+id/coursecode_txtview"
+            android:layout_marginLeft="56dp"
+            android:layout_marginStart="56dp"
+            android:layout_gravity="right|top"
+            android:layout_x="349dp"
+            android:layout_y="56dp" />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/folder"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_alignTop="@+id/Export"
+            android:layout_alignLeft="@+id/Register"
+            android:layout_alignStart="@+id/Register"
+            android:clickable="true"
+            android:src="@drawable/folder"
+            android:layout_x="342dp"
+            android:layout_y="166dp"
+            android:layout_gravity="right|bottom" />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/Export"
+            android:layout_marginTop="84dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/export"
+            android:layout_below="@+id/StartCamera"
+            android:layout_alignLeft="@+id/StartCamera"
+            android:layout_alignStart="@+id/StartCamera"
+            android:layout_gravity="left|bottom"
+            android:layout_x="105dp"
+            android:layout_y="165dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="514dp"
         android:layout_height="100dp"
-        android:id="@+id/StartCamera"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/camera"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/coursecode_txtview"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="39dp"
-        android:layout_marginStart="39dp"
-        android:layout_gravity="center_vertical"
-        android:layout_x="102dp"
-        android:layout_y="58dp" />
+        android:layout_x="4dp"
+        android:layout_y="-5dp">
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/Register"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/schedule"
-        android:layout_below="@+id/coursecode_txtview"
-        android:layout_toRightOf="@+id/coursecode_txtview"
-        android:layout_toEndOf="@+id/coursecode_txtview"
-        android:layout_marginLeft="56dp"
-        android:layout_marginStart="56dp"
-        android:layout_gravity="center_vertical"
-        android:layout_x="349dp"
-        android:layout_y="56dp" />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/coursecode_txtview"
+            android:textSize="18dp"
+            android:layout_below="@+id/coursename_txtview"
+            android:layout_alignLeft="@+id/coursename_txtview"
+            android:layout_alignStart="@+id/coursename_txtview"
+            android:layout_x="465dp"
+            android:layout_y="6dp"
+            android:layout_gravity="right|top" />
 
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/coursecode_txtview"
-        android:textSize="18dp"
-        android:layout_below="@+id/coursename_txtview"
-        android:layout_alignLeft="@+id/coursename_txtview"
-        android:layout_alignStart="@+id/coursename_txtview"
-        android:layout_x="446dp"
-        android:layout_y="20dp" />
-
-    <TextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/coursename_txtview"
-        android:textSize="18dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_x="15dp"
-        android:layout_y="15dp" />
-
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/Export"
-        android:layout_marginTop="84dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/export"
-        android:layout_below="@+id/StartCamera"
-        android:layout_alignLeft="@+id/StartCamera"
-        android:layout_alignStart="@+id/StartCamera"
-        android:layout_gravity="center_vertical"
-        android:layout_x="105dp"
-        android:layout_y="165dp" />
-
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/folder"
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_alignTop="@+id/Export"
-        android:layout_alignLeft="@+id/Register"
-        android:layout_alignStart="@+id/Register"
-        android:clickable="true"
-        android:src="@drawable/folder"
-        android:layout_x="342dp"
-        android:layout_y="166dp" />
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/coursename_txtview"
+            android:textSize="18dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_x="4dp"
+            android:layout_y="12dp"
+            android:layout_gravity="left|top" />
+    </FrameLayout>
 
 </AbsoluteLayout>

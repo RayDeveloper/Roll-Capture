@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Set;
@@ -46,15 +47,25 @@ public class MainActivity extends AppCompatActivity {
         });
         checkRequestPermission();
 
-        final ImageView newCourse = (ImageView) findViewById(R.id.newCourse);
-        newCourse.setOnClickListener(new View.OnClickListener() {
+        final TextView viewCourses_txt= (TextView) findViewById(R.id.viewCourses_txt);
+        viewCourses_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-               // Intent intent = new Intent(MainActivity.this, Setup.class);
-                Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, CourseList.class);
                 startActivity(intent);
             }
+
         });
 
+        final TextView Course_heading= (TextView) findViewById(R.id.Course_heading);
+        Course_heading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CourseList.class);
+                startActivity(intent);
+            }
+
+        });
         final ImageView courseList = (ImageView) findViewById(R.id.courseList);
         courseList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -64,6 +75,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        final ImageView newCourse = (ImageView) findViewById(R.id.newCourse);
+        newCourse.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               // Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, Setup.class);
+                startActivity(intent);
+            }
+        });
+
+        final TextView setup_courseRole_txtView = (TextView) findViewById(R.id.setup_courseRole_txtView);
+        setup_courseRole_txtView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, Setup.class);
+                startActivity(intent);
+            }
+        });
+
+        final TextView setup_textview = (TextView) findViewById(R.id.setup_textview);
+        setup_textview.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, Setup.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -89,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
 
         if(id== R.id.action_about){
             new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("Project for COMP 3275")
-                    .setMessage("This project was done by:\n Raydon Davis-813117991\n Kylie  Soogrim-811000178\nLeslie Yearwood-806002984\nAnnastacy Mohan-809000726\n Thank you for downloading this app")
+                    .setTitle("COMP 3275 Project")
+                    .setMessage(getString(R.string.dialog_about))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(R.drawable.diploma)
                     .show();
 
 
@@ -148,14 +187,14 @@ public class MainActivity extends AppCompatActivity {
         }else{
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Permission Denied")
-                    .setMessage("The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end.")
+                    .setMessage(getString(R.string.dialog_permissions))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
 
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(R.drawable.lock)
                     .show();
             //Toast.makeText(this,"The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end." ,Toast.LENGTH_LONG).show();
 

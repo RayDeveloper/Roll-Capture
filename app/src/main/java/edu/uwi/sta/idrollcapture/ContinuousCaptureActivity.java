@@ -86,8 +86,8 @@ String coursecode;
             String course_name = prefs.getString("coursename",null);//"No name defined" is the default value.
             String course_code = prefs.getString("coursecode",null);//"No name defined" is the default value.
 
-            String new_coursename=course_name.replaceAll("\\s+","");
-            String new_coursecode=course_code.replaceAll("\\s+", "");
+            String new_coursename=course_name.replaceAll("\\s+","_");
+            String new_coursecode=course_code.replaceAll("\\s+", "_");
             //String new_coursecode=coursecode.replaceAll("\\s+","");
             //String new_coursename=coursename.replaceAll("\\s+","");
 
@@ -101,7 +101,7 @@ String coursecode;
 
                 if (Scans.contains(result.getText())) {
                // if (Arrays.asList(Scans).contains(result.getText())) {
-                    Toast.makeText(ContinuousCaptureActivity.this, "ID number already in list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ContinuousCaptureActivity.this,getString(R.string.toast_scan), Toast.LENGTH_SHORT).show();
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 400 milliseconds
                     v.vibrate(400);

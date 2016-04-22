@@ -82,10 +82,12 @@ public class Register extends AppCompatActivity {
 
 
 
-             new_coursename= course_name.replaceAll("\\s+","");
-             new_coursecode= course_code.replaceAll("\\s+","");
+             new_coursename= course_name.replaceAll("\\s+","_");
+             new_coursecode= course_code.replaceAll("\\s+","_");
 
-            table_name=new_coursename+new_coursecode;
+       // table_name=course_name+course_code;
+
+        table_name=new_coursename+new_coursecode;
         Toast.makeText(Register.this,"tableName:\n"+table_name, Toast.LENGTH_SHORT).show();
 
 
@@ -94,8 +96,8 @@ public class Register extends AppCompatActivity {
 
         final ListView listView = (ListView) findViewById(R.id.register_lv);
 
-        courseList = getIDs(table_name);
-        IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
+       // courseList = getIDs(table_name);
+        //IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
         listView.setEmptyView(findViewById(android.R.id.empty));
         //View emptyView = getLayoutInflater().inflate(R.layout.emptylist, null);
         //addContentView(emptyView, listView.getLayoutParams());
@@ -104,7 +106,21 @@ public class Register extends AppCompatActivity {
 //        ViewGroup viewGroup= (ViewGroup)listView.getParent();
 //        viewGroup.addView(view);
 //        listView.setEmptyView(view);
-        listView.setAdapter(adapter);
+       // listView.setAdapter(adapter);
+
+        new Thread(new Runnable() {
+            public void run() {
+                courseList = getIDs(table_name);
+                IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
+                listView.setAdapter(adapter);
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //adapter.notifyDataSetChanged();
+
+                    }
+                });
+            }
+        }).start();
 
 //        Intent intent = new Intent();
 //        intent.putExtra("coursename", coursename);
@@ -118,7 +134,7 @@ public class Register extends AppCompatActivity {
     public  List<ID> getIDs(String tablename){
         DBHelper mDbHelper = new DBHelper(Register.this);
         // Gets the data repository in write mode
-        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        final SQLiteDatabase db = mDbHelper.getReadableDatabase();
         //String selectQuery = "SELECT idnumber,time FROM "+ tablename ;
         //Cursor cursor =db.rawQuery(selectQuery, null);
         // Define a projection that specifies which columns from the database
@@ -156,6 +172,8 @@ public class Register extends AppCompatActivity {
         }
         db.close();
         cursor.close();
+
+
         return FavList;
     }
 
