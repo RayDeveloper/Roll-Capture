@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import edu.uwi.sta.idrollcapture.R;
 
-public class CourseListAdapter extends BaseAdapter {
+public class CourseListAdapter extends BaseAdapter {//custom adapter to display courses
 
     Context context;
     List<courses> courseList;
@@ -54,15 +54,15 @@ public class CourseListAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.course_view, null);
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);//get a reference to layout service
+            convertView = inflater.inflate(R.layout.course_view, null);//using custom layout
 
         }
 
-        TextView tvSlNo = (TextView) convertView.findViewById(R.id.coursename_txtview);
-        tvSlNo.setText(contactListItems.getCourse());
-        TextView tvName = (TextView) convertView.findViewById(R.id.coursecode_txtview);
-        tvName.setText(contactListItems.getCode());
+        TextView coursename = (TextView) convertView.findViewById(R.id.coursename_txtview);
+        coursename.setText(contactListItems.getCourse());
+        TextView coursecode = (TextView) convertView.findViewById(R.id.coursecode_txtview);
+        coursecode.setText(contactListItems.getCode());
 
 
         return convertView;

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uwi.sta.idrollcapture.Models.CourseListAdapter;
 import edu.uwi.sta.idrollcapture.Models.DBHelper;
@@ -41,6 +45,9 @@ public class Register extends AppCompatActivity {
     String course_code;
     String new_coursecode;
     String new_coursename;
+    IDListAdapter adapter;
+    ListView listView;
+    private static final String TAG = "Register";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,28 +59,14 @@ public class Register extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getPrefs();//get the preferences saved in scan_home
+        getIDsAsync IDASync=new getIDsAsync();//create a new instance of getIDsAsync
+        IDASync.execute("");//execute the asyncTask
 
 
-        final ListView listView = (ListView) findViewById(R.id.register_lv);
 
-       // courseList = getIDs(table_name);
-        //IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
-        listView.setEmptyView(findViewById(android.R.id.empty));
-       // listView.setAdapter(adapter);
 
-        new Thread(new Runnable() {
-            public void run() {//I hope this is correct
-                courseList = getIDs(table_name);
-                IDListAdapter adapter = new IDListAdapter(Register.this, courseList);
-                listView.setAdapter(adapter);
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        //adapter.notifyDataSetChanged();
 
-                    }
-                });
-            }
-        }).start();
+
 
     }
 
@@ -97,45 +90,76 @@ public class Register extends AppCompatActivity {
     }
 
 
-    public  List<ID> getIDs(String tablename){
-        DBHelper mDbHelper = new DBHelper(Register.this);
-        final SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = {
-                IDsContract.IDsEntry.COLUMN_NAME_idnumber,
-                IDsContract.IDsEntry.COLUMN_NAME_time
-
-        };
 
 
-        Cursor cursor = db.query(
-                tablename,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                null                                 // The sort order
-        );
-//using Cursor retrieve values
-
-        List<ID> FavList = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            do {
-                ID list = new ID();
-                list.setID(cursor.getString(0));//first column
-                list.setTime(cursor.getString(1));//second column
-
-                FavList.add(list);
-            } while (cursor.moveToNext());
-        }
-        db.close();
-        cursor.close();
+private class getIDsAsync extends AsyncTask<String,Void,String>{//AsyncTask to retrieve ID's
 
 
-        return FavList;
+    @Override
+    protected String doInBackground(String... params) {
+
+            listView=(ListView) findViewById(R.id.register_lv);
+            List<ID> FavList = new ArrayList<>();
+
+            DBHelper mDbHelper = new DBHelper(Register.this);
+            final SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+
+
+            String[] projection = {
+                    IDsContract.IDsEntry.COLUMN_NAME_idnumber,
+                    IDsContract.IDsEntry.COLUMN_NAME_time
+
+            };
+
+
+            Cursor cursor = db.query(
+                    table_name,  // The table to query
+                    projection,                               // The columns to return
+                    null,                                // The columns for the WHERE clause
+                    null,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            if (cursor.moveToFirst()) {
+                do {
+                    ID list = new ID();
+                    list.setID(cursor.getString(0));//first column of query
+                    list.setTime(cursor.getString(1));//second column query
+
+                    FavList.add(list);
+                } while (cursor.moveToNext());
+            }
+            db.close();
+            cursor.close();
+            courseList=FavList;
+
+         adapter = new IDListAdapter(Register.this, courseList);
+
+
+        Log.v(TAG, "doInBackGround method");
+
+
+
+        return null;
     }
 
+
+    @Override
+    protected void onPostExecute(String result) {//always returns void
+
+           listView.setEmptyView(findViewById(android.R.id.empty));
+
+           listView.setAdapter(adapter);
+
+        Log.v(TAG, "OnPostExecute method");
+
+
+
+    }
+}
 
 
 

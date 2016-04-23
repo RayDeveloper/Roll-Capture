@@ -12,8 +12,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -49,6 +52,8 @@ public class ContinuousCaptureActivity extends Activity implements  CompoundBarc
     int x = 0;
     String table_name="";
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+    String newDatecreated;
+    String scanned;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +86,9 @@ public class ContinuousCaptureActivity extends Activity implements  CompoundBarc
 
 
             if (result.getText() != null) {
+                Log.v(TAG,"ID found: "+result.getText());
 
+                    scanned=result.getText();
                 if (Scans.contains(result.getText())) {//checks if entry was already scanned in the particular session
                     Toast.makeText(ContinuousCaptureActivity.this,getString(R.string.toast_scan), Toast.LENGTH_SHORT).show();
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -96,23 +103,11 @@ public class ContinuousCaptureActivity extends Activity implements  CompoundBarc
                     v.vibrate(200);//vibrate to show addition
 
                     String datecreated = DateFormat.getDateTimeInstance().format(new Date());//gets the exact date and time
-                    String newDatecreated = datecreated.replace(",", "");//takes out the , to put nothing -blank
-                    DBHelper mDbHelper = new DBHelper(ContinuousCaptureActivity.this);
-                    // Gets the data repository in write mode
-                    final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                     newDatecreated = datecreated.replace(",", "");//takes out the , to put nothing -blank
 
-                    ContentValues values = new ContentValues();
-                    values.put(IDsContract.IDsEntry.COLUMN_NAME_idnumber, result.getText());
-                    values.put(IDsContract.IDsEntry.COLUMN_NAME_time, newDatecreated);
+                    new addIDAsync().execute("");//calling async method to add ID numbers Asynchronously each time
 
-                    final long newRowId = db.insert(table_name, null, values);
-                    db.close();
-                    if(newRowId!=-1){
-                        //successfully added
-                    }else{
-                        Toast.makeText(ContinuousCaptureActivity.this,"Database addition failed", Toast.LENGTH_SHORT).show();
 
-                    }
 
 
                 }
@@ -167,4 +162,44 @@ public class ContinuousCaptureActivity extends Activity implements  CompoundBarc
     public void onTorchOff() {
         switchFlashlightButton.setText(R.string.turn_on_flashlight);
     }
+
+
+
+    private class addIDAsync extends AsyncTask<String,Void,Long> {//Async task for adding ID number in the background because it may be alot of ID's being scanned
+        ContentValues values;
+        @Override
+        protected void onPreExecute(){
+            values = new ContentValues();
+            values.put(IDsContract.IDsEntry.COLUMN_NAME_idnumber, scanned);
+            values.put(IDsContract.IDsEntry.COLUMN_NAME_time, newDatecreated);
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Long doInBackground(String...params){
+            long id=0;
+            try{
+                DBHelper mDbHelper = new DBHelper(ContinuousCaptureActivity.this);
+                // Gets the data repository in write mode
+                final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                 id = db.insert(table_name, null, values);
+                db.close();
+
+
+            }catch (SQLiteException e){
+                Log.v(TAG,"Exception "+e.getMessage());
+            }
+            return id;
+        }
+
+        @Override
+        protected  void onPostExecute(Long id){
+            super.onPostExecute(id);
+        }
+
+    }
 }
+
+

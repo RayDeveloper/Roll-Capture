@@ -18,7 +18,7 @@ import java.util.List;
 import edu.uwi.sta.idrollcapture.R;
 import edu.uwi.sta.idrollcapture.Register;
 
-public class IDListAdapter extends BaseAdapter {
+public class IDListAdapter extends BaseAdapter {//custom adapter to display ID's
 
     Context context;
     List<ID> courseList;
@@ -51,25 +51,22 @@ public class IDListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup arg2) {
 
-        // Snackbar.make(convertView, "Inside getView", Snackbar.LENGTH_LONG).show();
 
         ID contactListItems = courseList.get(position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.idnumber_view, null);
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);//get a reference to layout service
+            convertView = inflater.inflate(R.layout.idnumber_view, null);//using custom layout
 
 
 
         }
 
-        TextView tvSlNo = (TextView) convertView.findViewById(R.id.id_txtview);
-        tvSlNo.setText(contactListItems.getID());
-        TextView tvName = (TextView) convertView.findViewById(R.id.time_txtview);
-        tvName.setText(contactListItems.getTime());
-//        TextView Date = (TextView) convertView.findViewById(R.id.date_txtview);
-//        Date.setText(contactListItems.getDate());
+        TextView id_txtview = (TextView) convertView.findViewById(R.id.id_txtview);
+        id_txtview.setText(contactListItems.getID());
+        TextView time_txtview = (TextView) convertView.findViewById(R.id.time_txtview);
+        time_txtview.setText(contactListItems.getTime());
 
 
 

@@ -7,10 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,11 +20,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +29,18 @@ import java.util.List;
 import edu.uwi.sta.idrollcapture.Models.CourseContract;
 import edu.uwi.sta.idrollcapture.Models.CourseListAdapter;
 import edu.uwi.sta.idrollcapture.Models.DBHelper;
+import edu.uwi.sta.idrollcapture.Models.ID;
+import edu.uwi.sta.idrollcapture.Models.IDListAdapter;
 import edu.uwi.sta.idrollcapture.Models.IDsContract;
-import edu.uwi.sta.idrollcapture.Models.SqlHandler;
 import edu.uwi.sta.idrollcapture.Models.courses;
+
+
 //Course List page where all the courses and course codes are displayed.
 public class CourseList extends AppCompatActivity {
-    SqlHandler sqlHandler;
     List<courses> courseList;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+    private static final String TAG = "CourseList ";
+
 
     String courseName;
     String courseCode;
@@ -48,6 +49,9 @@ public class CourseList extends AppCompatActivity {
     int isAltered=0;
     String new_newtable;
     int x=0;
+    ListView listView;
+
+    CourseListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,60 +60,122 @@ public class CourseList extends AppCompatActivity {
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Toast.makeText(CourseList.this, "Long press for options.", Toast.LENGTH_SHORT).show();
-        sqlHandler = new SqlHandler(this);
-
-        final ListView listView = (ListView) findViewById(R.id.courseList_view);
-        final DBHelper help = new DBHelper(getBaseContext());
-        //final CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
-        listView.setEmptyView(findViewById(android.R.id.empty));
-        //listView.setAdapter(adapter);
-        new Thread(new Runnable() {
-            public void run() {//I hope this is correct
-                courseList = help.getCourse();
-                final CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
-                listView.setAdapter(adapter);
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        //adapter.notifyDataSetChanged();
-
-                    }
-                });
-            }
-        }).start();
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                courses selectedFromList =(courses) (listView.getItemAtPosition(position));
-                 courseName= selectedFromList.getCourse();
-               courseCode = selectedFromList.getCode();
-                setPrfs();//sets the preferences to be transfered
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {//long press gives different options
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                courses selectedFromList =(courses) (listView.getItemAtPosition(pos));
-
-                courseName= selectedFromList.getCourse();
-                courseCode = selectedFromList.getCode();
-                String new_coursename=courseName.replaceAll("\\s+","_");//replaces spaces with underscores
-                String new_coursecode=courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
-                oldTable=new_coursename+new_coursecode;
-                Listdialog();//list out the options for when long press is activated
 
 
-                return true;
-            }
-        });
+        GetCoursesAsync getCoursesAsync = new  GetCoursesAsync();//create instance of GetCoursesAsync
+         getCoursesAsync.execute("");//execute the asyncTask
+        Log.v(TAG, "After async execute");
 
+
+//         //listView= (ListView)findViewById(R.id.courseList_view);
+//        adapter = new CourseListAdapter(CourseList.this, courseList);
+//        //listView.setAdapter(adapter);
+//
+//        Thread thd = new Thread(new Runnable(){
+//            public void run() {
+//                 listView= (ListView)findViewById(R.id.courseList_view);
+//                String selectQuery = "SELECT coursename,coursecode FROM course ";
+//                DBHelper help = new DBHelper(CourseList.this);
+//                SQLiteDatabase db = help.getWritableDatabase();
+//                Cursor cursor = db.rawQuery(selectQuery, null);
+//                List<courses> FavList = new ArrayList<>();
+//                if (cursor.moveToFirst()) {
+//                    do {
+//                        courses list = new courses();//course class instantiation
+//                        list.setCourse(cursor.getString(0));//first column query
+//                        list.setCode(cursor.getString(1));//second column of query
+//                        FavList.add(list);
+//                    } while (cursor.moveToNext());
+//                }
+//                db.close();
+//                cursor.close();
+//                courseList = FavList;
+//
+//                //List<courses> FavList = new ArrayList<>();
+//                //FavList=courseList;
+//                listView.post(new Runnable() {
+//                    public void run() {
+//                        //adapter.notifyDataSetChanged();
+//                        listView.setAdapter(adapter);
+//
+//
+//                    }
+//                });
+//            }
+//
+//    });
+//
+//    thd.start();
+
+
+
+//stop here
+
+
+            //getCoursesAsync.execute("");//execute the asyncTask
+
+
+
+
+            // new getCoursesAsync.execute("");//works this way in ContinuousCaptureActivity
+
+
+            //Toast.makeText(CourseList.this, "Long press for options.", Toast.LENGTH_SHORT).show();
+
+            //final ListView listView = (ListView) findViewById(R.id.courseList_view);
+//        final DBHelper help = new DBHelper(getBaseContext());
+            //final CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
+//        listView.setEmptyView(findViewById(android.R.id.empty));
+            //listView.setAdapter(adapter);
+//        new Thread(new Runnable() {
+//            public void run() {//I hope this is correct
+//                //courseList = help.getCourse();
+////                final CourseListAdapter adapter = new CourseListAdapter(CourseList.this, courseList);
+////                listView.setAdapter(adapter);
+//
+//                runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        //adapter.notifyDataSetChanged();
+//
+//                    }
+//                });
+//            }
+//        }).start();
+
+//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+//                    Log.v(TAG, "inside setOnItemClickListener ");
+//
+//                    courses selectedFromList = (courses) (listView.getItemAtPosition(position));
+//                    courseName = selectedFromList.getCourse();
+//                    courseCode = selectedFromList.getCode();
+//                    setPrfs();//sets the preferences to be transfered
+//                }
+//            });
+//
+//            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {//long press gives different options
+//                @Override
+//                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+//                    Log.v(TAG, "inside setOnItemLongClickListener ");
+//
+//                    courses selectedFromList = (courses) (listView.getItemAtPosition(pos));
+//
+//                    courseName = selectedFromList.getCourse();
+//                    courseCode = selectedFromList.getCode();
+//                    String new_coursename = courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
+//                    String new_coursecode = courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
+//                    oldTable = new_coursename + new_coursecode;
+//                    Listdialog();//list out the options for when long press is activated
+//
+//
+//                    return true;
+//                }
+//            });
 
     }
 
-    public  void setPrfs(){
+    public  void setPrefs(){
         Intent i = new Intent(CourseList.this, scan_home.class);
         Bundle bundle = new Bundle();
         bundle.putString("coursename",courseName); // place the position of the selected item
@@ -185,6 +251,8 @@ public class CourseList extends AppCompatActivity {
         final EditText coursecode = new EditText(CourseList.this);
         coursename.setText(courseName);//sets the edittext tothe old values
         coursecode.setText(courseCode);//sets the edittext tothe old values
+        coursecode.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);//sets all CAPS for  coursecode
+
         String new_coursename = courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
         String new_coursecode = courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
         final String table_name = new_coursename+new_coursecode;
@@ -330,5 +398,99 @@ public class CourseList extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+    //first parameter is for onPostExecutelast is for do inBackGround
+    private class GetCoursesAsync extends AsyncTask<String,Void,String> {//AsyncTask to retrieve Courses
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+             DBHelper help = new DBHelper(CourseList.this);
+            listView = (ListView)findViewById(R.id.courseList_view);
+
+            courseList = help.getCourse();
+            List<courses> FavList = new ArrayList<>();
+            FavList=courseList;
+            adapter = new CourseListAdapter(CourseList.this, FavList);
+
+//            String selectQuery = "SELECT coursename,coursecode FROM course ";
+//            SQLiteDatabase db = help.getWritableDatabase();
+//            Cursor cursor = db.rawQuery(selectQuery, null);
+//            List<courses> FavList = new ArrayList<>();
+//            if (cursor.moveToFirst()) {
+//                do {
+//                    courses list = new courses();//course class instantiation
+//                    list.setCourse(cursor.getString(0));//first column query
+//                    list.setCode(cursor.getString(1));//second column of query
+//                    FavList.add(list);
+//                } while (cursor.moveToNext());
+//            }
+//            db.close();
+//            cursor.close();
+            //courseList= FavList;
+
+            //List<courses> FavList = new ArrayList<>();
+            //FavList=courseList;
+
+
+
+
+            Log.v(TAG, "doInBackGround method");
+
+
+
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {//had to put onlciks here because it executes the methods in the UI
+
+            listView.setEmptyView(findViewById(android.R.id.empty));
+            listView.setAdapter(adapter);
+
+            //adapter.notifyDataSetChanged();
+
+            Log.v(TAG, "OnPostExecute method");
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+                    Log.v(TAG, "inside setOnItemClickListener ");
+
+                    courses selectedFromList = (courses) (listView.getItemAtPosition(position));
+                    courseName = selectedFromList.getCourse();
+                    courseCode = selectedFromList.getCode();
+                    setPrefs();//sets the preferences to be transfered
+                }
+            });
+
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {//long press gives different options
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    Log.v(TAG, "inside setOnItemLongClickListener ");
+
+                    courses selectedFromList = (courses) (listView.getItemAtPosition(pos));
+
+                    courseName = selectedFromList.getCourse();
+                    courseCode = selectedFromList.getCode();
+                    String new_coursename = courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
+                    String new_coursecode = courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
+                    oldTable = new_coursename + new_coursecode;
+                    Listdialog();//list out the options for when long press is activated
+
+
+                    return true;
+                }
+            });
+
+
+
+
+        }
+    }
 
 }

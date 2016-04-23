@@ -42,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public  List<courses> getCourse(){
+    public  List<courses> getCourse(){//method to return all the courses
 
 
         String selectQuery = "SELECT coursename,coursecode FROM course ";
@@ -51,9 +51,9 @@ public class DBHelper extends SQLiteOpenHelper {
         List<courses> FavList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                courses list = new courses();
-                list.setCourse(cursor.getString(0));
-                list.setCode(cursor.getString(1));
+                courses list = new courses();//course class instantiation
+                list.setCourse(cursor.getString(0));//first column query
+                list.setCode(cursor.getString(1));//second column of query
                 FavList.add(list);
             } while (cursor.moveToNext());
         }

@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 import java.sql.Date;
 
 /**
- * Created by 813117991 on 2/23/2016.
+ * Created by Raydon on 2/23/2016.
  */
 public class CourseContract {
     private static final String INT_TYPE=" INTEGER ";
