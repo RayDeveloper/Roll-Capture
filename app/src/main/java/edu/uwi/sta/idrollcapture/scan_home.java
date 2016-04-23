@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,6 +33,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,11 +46,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import android.content.pm.PackageManager;
 
 import edu.uwi.sta.idrollcapture.Models.DBHelper;
+import edu.uwi.sta.idrollcapture.Models.ID;
+import edu.uwi.sta.idrollcapture.Models.IDListAdapter;
+import edu.uwi.sta.idrollcapture.Models.IDsContract;
 
 public class scan_home extends AppCompatActivity {
     String coursename;
@@ -59,6 +65,13 @@ public class scan_home extends AppCompatActivity {
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private boolean hasPermission;
     private static final int REQUEST_NETWORK_ACCESS = 112;
+    int check=3;
+    private static final String TAG = "scan_home";
+    int  finalTotal=0;
+    int filew=0;
+    int toast=0;
+    int sleepFor=0;
+    Thread thread;
 
 
 
@@ -152,32 +165,12 @@ public class scan_home extends AppCompatActivity {
         Export.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new AlertDialog.Builder(scan_home.this)
-                        .setTitle("Export Register")
+                        .setTitle("Download Register")
                         .setMessage(getString(R.string.dialog_export))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                DBHelper mDbHelper = new DBHelper(scan_home.this);
-                                final SQLiteDatabase db = mDbHelper.getWritableDatabase();//only works with getWritableDatabase
-                                Cursor cursor = db.query(filename, new String[]{"idnumber", "time"}, null, null, null, null, null);
-                                //cursor is now at the first result returned by this query
-                                String fileHeading = coursename + " " + coursecode + "\n";
-                                writeToFile(fileHeading, filename);//writes the course name and code to file first
-                                writeToFile("StudentID         Time Scanned", filename);//then writes the headings
-
-                                if (cursor.moveToFirst()) {//loop thru curosr to write ID's to file
-                                    do {
-                                        String db_idnumber = cursor.getString(cursor.getColumnIndex("idnumber"));
-                                        String db_time = cursor.getString(cursor.getColumnIndex("time"));
-                                        String line = db_idnumber + "  " + db_time;
-                                        writeToFile(line, filename);//writes each line at a time
-                                        numberofIDS++;//counts the number of lines added
-                                    }
-                                    while (cursor.moveToNext()); //loop will terminate when all the rows are exhausted
-                                }
-                                TotalIDs = TotalIDs + numberofIDS;//total number of IDs
-                                writeToFile("Total Number of Students: " + TotalIDs, filename);//writes the total to file
-                                cursor.close();
-
+                                WritetoFileAsync writetoFileAsync = new WritetoFileAsync();//create a new instance of getIDsAsync
+                                writetoFileAsync.execute("");//async task to write to file in the background
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -185,8 +178,9 @@ public class scan_home extends AppCompatActivity {
                                 // do nothing
                             }
                         })
-                        .setIcon(R.drawable.export2)
+                        .setIcon(R.drawable.download)
                         .show();
+
 
 
 
@@ -207,45 +201,33 @@ public class scan_home extends AppCompatActivity {
 
     }
 
-    public void dialog(){
-        new AlertDialog.Builder(scan_home.this)
-                .setTitle("Export Status")
-                .setMessage("Export Completed")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //finish();
 
-                    }
-                })
-                .setIcon(R.drawable.export2)
-                .show();
-    }
 
     public void writeToFile(String data, String filename) {
+//method will be called in AsycTask - WritetoFileAsync
 
+
+        FileWriter writer;
         String fileName = filename + ".txt";//create a .txt file. the .doc were not working properly
-
 
         try {
             File root = new File(Environment.getExternalStorageDirectory() + File.separator + "Student Roll Capture");//get directory
-            if (!root.exists()) {//if ! exist it creates it
+            if (!root.exists()) {//if it doesn't exist it creates it
                 root.mkdirs();
             }
             File gpxfile = new File(root, fileName);
 
+             writer = new FileWriter(gpxfile, true);
+            writer.append(data + "\n\n");//append to the already present file
 
-            FileWriter writer = new FileWriter(gpxfile, true);
-            writer.append(data + "\n\n");
             writer.flush();
             writer.close();
-            Toast.makeText(this, "Please wait writing to file....", Toast.LENGTH_SHORT).show();
+
+
         } catch (IOException e) {
             e.printStackTrace();
 
         }
-        //Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
-
-
 
 
 
@@ -269,7 +251,7 @@ public class scan_home extends AppCompatActivity {
 
                 // Do something else here. Maybe pop up a Dialog or Toast
                 new AlertDialog.Builder(scan_home.this)
-                        .setTitle("No app available ")
+                        .setTitle("No app available")
                         .setMessage("There is no app to open this file.")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -277,21 +259,21 @@ public class scan_home extends AppCompatActivity {
 
                             }
                         })
-                        .setIcon(R.drawable.icon)
+                        .setIcon(R.drawable.error)
                         .show();
             }
 
         }else{//if file does not exist as yet
             new AlertDialog.Builder(scan_home.this)
-                    .setTitle("Export")
-                    .setMessage("The file does not exist.Export it to create it.")
+                    .setTitle("Open Error")
+                    .setMessage("The file does not exist.Download it to create it.")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //finish();
 
                         }
                     })
-                    .setIcon(R.drawable.icon)
+                    .setIcon(R.drawable.error)
                     .show();
         }
     }
@@ -348,6 +330,68 @@ public class scan_home extends AppCompatActivity {
 
     }
 
+    private class WritetoFileAsync extends AsyncTask<String,Void,String> {//AsyncTask to do the write to file in the background
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            DBHelper mDbHelper = new DBHelper(scan_home.this);
+            final SQLiteDatabase db = mDbHelper.getWritableDatabase();//only works with getWritableDatabase
+            Cursor cursor = db.query(filename, new String[]{"idnumber", "time"}, null, null, null, null, null);
+            //cursor is now at the first result returned by this query
+
+            String fileHeading = coursename + " " + coursecode + "\n";
+            writeToFile(fileHeading, filename);//writes the course name and code to file first
+            Log.v(TAG, "line written to file: " + fileHeading);
+
+            writeToFile("StudentID         Time Scanned", filename);//then writes the headings
+            Log.v(TAG, "line written to file: " + "StudentID         Time Scanned");
+
+
+
+            if (cursor.moveToFirst()) {//loop thru curosr to write IDs to file
+                do {
+                    String db_idnumber = cursor.getString(cursor.getColumnIndex("idnumber"));
+                    String db_time = cursor.getString(cursor.getColumnIndex("time"));
+                    String line = db_idnumber + "  " + db_time;
+                    writeToFile(line, filename);//writes each line at a time
+                    Log.v(TAG,"line written to file: "+line);
+
+                    numberofIDS++;//counts the number of lines added
+                }
+                while (cursor.moveToNext()); //loop will terminate when all the rows are exhausted
+            }
+            TotalIDs = TotalIDs + numberofIDS;//total number of IDs
+            writeToFile("Total Number of Students: " + TotalIDs, filename);//writes the total to file
+            Log.v(TAG, "line written to file: " + "Total Number of Students: " + TotalIDs);
+            cursor.close();
+
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {//always returns void
+
+            new AlertDialog.Builder(scan_home.this)
+                    .setTitle("Download Report")
+                    .setMessage("Download Completed.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //finish();
+
+                        }
+                    })
+                    .setIcon(R.drawable.download)
+                    .show();
+            Log.v(TAG, "OnPostExecute method");
+
+
+
+        }
+    }
 
 
 }

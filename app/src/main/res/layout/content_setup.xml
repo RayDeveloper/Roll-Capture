@@ -13,23 +13,11 @@
     tools:showIn="@layout/activity_setup">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Setup "
-        android:id="@+id/textView7"
-        android:height="50dp"
-        android:textColor="#fbfafa"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:id="@+id/imageView6"
-        android:src="@drawable/plus"
+        android:src="@drawable/pluss"
         android:layout_marginTop="49dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -39,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Create new course"
+        android:text="@string/create_new_course_setup"
         android:id="@+id/textView8"
         android:textColor="#5d5757"
         android:singleLine="true"
@@ -49,15 +37,14 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:text="OK"
+        android:text="@string/button_ok_setup"
         android:id="@+id/btn_save"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="47dp"
         android:clickable="true"
-        android:layout_below="@+id/code_editText"
-        android:layout_alignLeft="@+id/code_editText"
-        android:layout_alignStart="@+id/code_editText"
         android:background="#e3e4e3"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/code_editText"
+        android:layout_centerHorizontal="true" />
         <!--android:background="@android:color/darker_gray"-->
 
 
@@ -67,28 +54,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/name_editText"
-        android:hint="Course Name"
+        android:hint="@string/course_name_hint"
         android:capitalize="none"
+        android:layout_marginTop="89dp"
         android:layout_below="@+id/textView8"
-        android:layout_alignRight="@+id/textView8"
-        android:layout_alignEnd="@+id/textView8"
-        android:layout_marginTop="88dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:maxLength="70"
         android:layout_alignLeft="@+id/imageView6"
-        android:layout_alignStart="@+id/imageView6"
-         />
+        android:layout_alignStart="@+id/imageView6" />
 
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/code_editText"
-        android:hint="Course Code e.g COMP 3275"
+        android:hint="@string/course_code_hint"
         android:layout_below="@+id/name_editText"
         android:layout_alignLeft="@+id/name_editText"
         android:layout_alignStart="@+id/name_editText"
         android:layout_marginTop="43dp"
-        android:layout_alignRight="@+id/name_editText"
-        android:layout_alignEnd="@+id/name_editText"
-        android:capitalize="characters" />
+        android:maxLength="10"
+        android:capitalize="characters"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

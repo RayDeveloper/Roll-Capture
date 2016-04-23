@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -232,7 +233,7 @@ public class CourseList extends AppCompatActivity {
                         db.execSQL(delsql);
                         db.close();
                         restartActivity();
-                        Toast.makeText(CourseList.this, "Course deleted at :\n" + courseName, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(CourseList.this, "Course deleted at :\n" + courseName, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -240,7 +241,7 @@ public class CourseList extends AppCompatActivity {
                         // do nothing
                     }
                 })
-                .setIcon(R.drawable.delete)
+                .setIcon(R.drawable.delete2)
                 .show();
 
 
@@ -256,11 +257,25 @@ public class CourseList extends AppCompatActivity {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(CourseList.this);
         alertDialog.setTitle("Change course name and code.");
         alertDialog.setMessage("Enter new names.");
+
         final EditText coursename = new EditText(CourseList.this);
         final EditText coursecode = new EditText(CourseList.this);
+
         coursename.setText(courseName);//sets the edittext tothe old values
         coursecode.setText(courseCode);//sets the edittext tothe old values
-        coursecode.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);//sets all CAPS for  coursecode
+        coursecode.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);//sets all CAPS for  coursecode programmatically
+
+        //sets the max length for both programmatically
+        int maxCourseName = 70;
+        InputFilter[] maxcoursename = new InputFilter[1];
+        maxcoursename[0] = new InputFilter.LengthFilter(maxCourseName);
+        coursename.setFilters(maxcoursename);
+
+        int maxCourseCode = 10;
+        InputFilter[] maxcoursecode = new InputFilter[1];
+        maxcoursecode[0] = new InputFilter.LengthFilter(maxCourseCode);
+        coursecode.setFilters(maxcoursecode);
+
 
         String new_coursename = courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
         String new_coursecode = courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
@@ -324,7 +339,7 @@ public class CourseList extends AppCompatActivity {
 
                                         }
                                     })
-                                    .setIcon(R.drawable.icon)
+                                    .setIcon(R.drawable.error)
                                     .show();
 
                         }
@@ -387,7 +402,7 @@ public class CourseList extends AppCompatActivity {
 
                             }
                         })
-                        .setIcon(R.drawable.signs)
+                        .setIcon(R.drawable.help)
                         .show();
                 return true;
 
@@ -424,25 +439,6 @@ public class CourseList extends AppCompatActivity {
             FavList=courseList;
             adapter = new CourseListAdapter(CourseList.this, FavList);
 
-//            String selectQuery = "SELECT coursename,coursecode FROM course ";
-//            SQLiteDatabase db = help.getWritableDatabase();
-//            Cursor cursor = db.rawQuery(selectQuery, null);
-//            List<courses> FavList = new ArrayList<>();
-//            if (cursor.moveToFirst()) {
-//                do {
-//                    courses list = new courses();//course class instantiation
-//                    list.setCourse(cursor.getString(0));//first column query
-//                    list.setCode(cursor.getString(1));//second column of query
-//                    FavList.add(list);
-//                } while (cursor.moveToNext());
-//            }
-//            db.close();
-//            cursor.close();
-            //courseList= FavList;
-
-            //List<courses> FavList = new ArrayList<>();
-            //FavList=courseList;
-
 
 
 
@@ -461,7 +457,6 @@ public class CourseList extends AppCompatActivity {
             listView.setEmptyView(findViewById(android.R.id.empty));
             listView.setAdapter(adapter);
 
-            //adapter.notifyDataSetChanged();
 
             Log.v(TAG, "OnPostExecute method");
 

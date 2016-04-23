@@ -165,7 +165,7 @@ public class ContinuousCaptureActivity extends Activity implements  CompoundBarc
 
 
 
-    private class addIDAsync extends AsyncTask<String,Void,Long> {//Async task for adding ID number in the background because it may be alot of ID's being scanned
+    private class addIDAsync extends AsyncTask<String,Void,Long> {//Async task for adding ID number in the background because it may be alot of IDs being scanned
         ContentValues values;
         @Override
         protected void onPreExecute(){

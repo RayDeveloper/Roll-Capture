@@ -79,7 +79,7 @@ public class Setup extends AppCompatActivity {
 
                                     }
                                 })
-                                .setIcon(R.drawable.icon)
+                                .setIcon(R.drawable.error)
                                 .show();
                     } else {//if not in list
 
@@ -165,7 +165,7 @@ public boolean isfieldEmpty(String coursename,String coursecode) {//checks if fi
     }
 
 
-    public void AddDesiredTable(String TableName){//creates a table for ID's
+    public void AddDesiredTable(String TableName){//creates a table for IDs
         DBHelper mDbHelper = new DBHelper(Setup.this);
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 

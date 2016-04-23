@@ -18,7 +18,7 @@ import java.util.List;
 import edu.uwi.sta.idrollcapture.R;
 import edu.uwi.sta.idrollcapture.Register;
 
-public class IDListAdapter extends BaseAdapter {//custom adapter to display ID's
+public class IDListAdapter extends BaseAdapter {//custom adapter to display IDs
 
     Context context;
     List<ID> courseList;

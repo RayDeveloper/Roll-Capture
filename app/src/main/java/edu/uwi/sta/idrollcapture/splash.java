@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+/**
+ * Created by Raydon on 4/16/2016.
+ */
 public class splash extends AppCompatActivity {
     private final int SPLASH_DISPLAY_LENGTH = 1000;//1sec
     @Override
@@ -18,7 +21,7 @@ public class splash extends AppCompatActivity {
 
 
                 /* New Handler to start the Menu-Activity
-         * and close this Splash-Screen after some seconds.*/
+         * and close the Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

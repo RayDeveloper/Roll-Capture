@@ -19,15 +19,15 @@
     <FrameLayout
         android:layout_width="500dp"
         android:layout_height="200dp"
-        android:layout_x="25dp"
-        android:layout_y="57dp">
+        android:layout_x="26dp"
+        android:layout_y="40dp">
 
         <ImageButton
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/StartCamera"
             android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/camera"
+            android:src="@drawable/commerce"
             android:layout_below="@+id/coursecode_txtview"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -40,7 +40,7 @@
             android:layout_height="100dp"
             android:id="@+id/Register"
             android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/schedule"
+            android:src="@drawable/agenda1"
             android:layout_below="@+id/coursecode_txtview"
             android:layout_toRightOf="@+id/coursecode_txtview"
             android:layout_toEndOf="@+id/coursecode_txtview"
@@ -59,7 +59,7 @@
             android:layout_alignLeft="@+id/Register"
             android:layout_alignStart="@+id/Register"
             android:clickable="true"
-            android:src="@drawable/folder"
+            android:src="@drawable/fold"
             android:layout_x="342dp"
             android:layout_y="166dp"
             android:layout_gravity="right|bottom" />
@@ -70,18 +70,44 @@
             android:id="@+id/Export"
             android:layout_marginTop="84dp"
             android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/export"
+            android:src="@drawable/cexport"
             android:layout_below="@+id/StartCamera"
             android:layout_alignLeft="@+id/StartCamera"
             android:layout_alignStart="@+id/StartCamera"
             android:layout_gravity="left|bottom"
             android:layout_x="105dp"
             android:layout_y="165dp" />
+
+        <TextView
+            android:layout_width="81dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="     Scan IDs"
+            android:id="@+id/textView"
+            android:layout_gravity="left|top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=" Download Register"
+            android:id="@+id/textView3"
+            android:layout_gravity="left|center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="View Downloaded Register"
+            android:id="@+id/textView14"
+            android:layout_gravity="right|center_vertical"
+            android:layout_x="460dp"
+            android:layout_y="140dp" />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="514dp"
-        android:layout_height="100dp"
+        android:layout_height="62dp"
         android:layout_x="4dp"
         android:layout_y="-5dp">
 
@@ -91,6 +117,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/coursecode_txtview"
+            android:textColor="#44a33c"
             android:textSize="18dp"
             android:layout_below="@+id/coursename_txtview"
             android:layout_alignLeft="@+id/coursename_txtview"
@@ -104,6 +131,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
+            android:textColor="#44a33c"
             android:id="@+id/coursename_txtview"
             android:textSize="18dp"
             android:layout_alignParentTop="true"
@@ -111,6 +139,14 @@
             android:layout_x="4dp"
             android:layout_y="12dp"
             android:layout_gravity="left|top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Register     "
+            android:id="@+id/textView15"
+            android:layout_gravity="right|bottom" />
     </FrameLayout>
 
 </AbsoluteLayout>

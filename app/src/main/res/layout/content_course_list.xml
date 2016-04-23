@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="No courses"
+        android:text="@string/course_list_empty_portrait"
         android:id="@android:id/empty"
         android:textSize="40sp"
         android:layout_centerVertical="true"

@@ -2,19 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="7dip"
+    android:padding="6dip"
     >
 
     <TextView
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Course Name"
+        android:text="@string/course_name_view"
         android:id="@+id/coursename_txtview"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:ellipsize="end"
         android:maxLines="1"/>
 
@@ -22,7 +22,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Course Code"
+        android:text="@string/course_code_view"
         android:id="@+id/coursecode_txtview"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"

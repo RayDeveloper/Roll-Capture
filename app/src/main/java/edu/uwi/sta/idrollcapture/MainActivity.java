@@ -114,12 +114,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         if(id== R.id.action_about){
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("COMP 3275 Project")
@@ -128,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     })
-                    .setIcon(R.drawable.diploma)
+                    .setIcon(R.drawable.announcement)
                     .show();
 
 

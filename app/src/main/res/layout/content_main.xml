@@ -19,23 +19,23 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/courseList"
-        android:layout_marginTop="74dp"
+        android:layout_marginTop="41dp"
         android:src="@drawable/book"
+        android:clickable="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:clickable="true" />
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/newCourse"
-        android:src="@drawable/settings"
-        android:layout_below="@+id/courseList"
+        android:src="@drawable/tool"
+        android:layout_marginTop="115dp"
+        android:clickable="true"
+        android:layout_below="@+id/viewCourses_txt"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="47dp"
-        android:clickable="true" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Setup"
+        android:text="@string/main_setup_portrait"
         android:id="@+id/setup_textview"
         android:layout_alignTop="@+id/newCourse"
         android:layout_toRightOf="@+id/newCourse"
@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="View courses"
+        android:text="@string/main_view_courses_portrait"
         android:id="@+id/viewCourses_txt"
         android:layout_below="@+id/Course_heading"
         android:layout_alignLeft="@+id/Course_heading"
@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Create a new course role"
+        android:text="@string/main_create_new_course_role_portrait"
         android:id="@+id/setup_courseRole_txtView"
         android:layout_below="@+id/setup_textview"
         android:layout_toRightOf="@+id/newCourse"
