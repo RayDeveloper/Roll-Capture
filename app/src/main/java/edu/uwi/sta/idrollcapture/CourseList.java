@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -221,13 +222,13 @@ public class CourseList extends AppCompatActivity {
                         String sql = "DELETE FROM " +
                                 " course " +
                                 " WHERE " + "coursename" +
-                                " = '" + courseName + "'"+" and "+ " coursecode "+ " = '" + courseCode+ "' ;";
+                                " = '" + courseName + "'" + " and " + " coursecode " + " = '" + courseCode + "' ;";
                         db.execSQL(sql);
 
-                        String new_coursename=courseName.replaceAll("\\s+","_");//replaces spaces with underscores
-                        String new_coursecode=courseCode.replaceAll("\\s+","_");//replaces spaces with underscores
-                         String table_name=new_coursename+new_coursecode;
-                        String delsql="DROP TABLE '"+ table_name +"';";
+                        String new_coursename = courseName.replaceAll("\\s+", "_");//replaces spaces with underscores
+                        String new_coursecode = courseCode.replaceAll("\\s+", "_");//replaces spaces with underscores
+                        String table_name = new_coursename + new_coursecode;
+                        String delsql = "DROP TABLE '" + table_name + "';";
                         db.execSQL(delsql);
                         db.close();
                         restartActivity();
@@ -241,6 +242,14 @@ public class CourseList extends AppCompatActivity {
                 })
                 .setIcon(R.drawable.delete)
                 .show();
+
+
+//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // only for LOLLIPOP and newer versions
+
+
+
+       // }
 
     }
     public void editCourse() {
