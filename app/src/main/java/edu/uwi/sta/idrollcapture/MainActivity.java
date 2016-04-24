@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Set;
@@ -34,27 +35,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        checkRequestPermission();//checks permissions when app is first launched
+        setUponClicks();//methods that houses all the onCLickListeners for buttons and textViews
+
+
+    }
+
+    public void setUponClicks(){
+        final TextView viewCourses_txt= (TextView) findViewById(R.id.viewCourses_txt);
+        viewCourses_txt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-            }
-        });
-        checkRequestPermission();
-
-        final ImageView newCourse = (ImageView) findViewById(R.id.newCourse);
-        newCourse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               // Intent intent = new Intent(MainActivity.this, Setup.class);
-                Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, CourseList.class);
                 startActivity(intent);
             }
+
         });
 
+        final TextView Course_heading= (TextView) findViewById(R.id.Course_heading);
+        Course_heading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CourseList.class);
+                startActivity(intent);
+            }
+
+        });
         final ImageView courseList = (ImageView) findViewById(R.id.courseList);
         courseList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -64,6 +72,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        final ImageView newCourse = (ImageView) findViewById(R.id.newCourse);
+        newCourse.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, Setup.class);
+                startActivity(intent);
+            }
+        });
+
+        final TextView setup_courseRole_txtView = (TextView) findViewById(R.id.setup_courseRole_txtView);
+        setup_courseRole_txtView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, Setup.class);
+                startActivity(intent);
+            }
+        });
+
+        final TextView setup_textview = (TextView) findViewById(R.id.setup_textview);
+        setup_textview.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Intent intent = new Intent(MainActivity.this, Setup.class);
+                Intent intent = new Intent(MainActivity.this, Setup.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -76,9 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -89,13 +122,13 @@ public class MainActivity extends AppCompatActivity {
 
         if(id== R.id.action_about){
             new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("Project for COMP 3275")
-                    .setMessage("This project was done by:\n Raydon Davis-813117991\n Kylie  Soogrim-811000178\nLeslie Yearwood-806002984\nAnnastacy Mohan-809000726\n Thank you for downloading this app")
+                    .setTitle("COMP 3275 Project")
+                    .setMessage(getString(R.string.dialog_about))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(R.drawable.diploma)
                     .show();
 
 
@@ -104,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+//check permissions when activity is first launched
     public void checkRequestPermission(){
 
 
@@ -115,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED );
-
+//check group permissons
         if (!hasPermission){
             ActivityCompat.requestPermissions(this,
                     new String[]{
@@ -136,30 +169,19 @@ public class MainActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED){
-//        switch(requestCode){
-//            case REQUEST_NETWORK_ACCESS:{
-            //if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-            //reload my activity
-            //Toast.makeText(this,"Granted",Toast.LENGTH_LONG).show();
-
-//                    Intent i = getIntent();
-//                    finish();
-//                    startActivity(i);
         }else{
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Permission Denied")
-                    .setMessage("The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end.")
+                    .setMessage(getString(R.string.dialog_permissions))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                            finish();//closes off the app if it is not granted
 
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(R.drawable.lock)
                     .show();
-            //Toast.makeText(this,"The app was not granted permission.Please consider granting it permission.The app may not function properly.The app will now end." ,Toast.LENGTH_LONG).show();
 
-           // finish();
         }
 
     }
@@ -168,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
+        if (doubleBackToExitPressedOnce) {//if true go back
             super.onBackPressed();
             return;
         }
@@ -179,9 +201,11 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
 
             @Override
-            public void run() {
+            public void run() {//resets value after 2secs
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
     }
+
+
 }

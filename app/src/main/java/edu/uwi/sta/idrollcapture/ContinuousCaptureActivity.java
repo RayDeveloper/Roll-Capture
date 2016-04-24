@@ -12,8 +12,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -39,28 +42,24 @@ import edu.uwi.sta.idrollcapture.Models.IDsDBHelper;
 import edu.uwi.sta.idrollcapture.Models.IDsContract;
 
 /**
- * This sample performs continuous scanning, displaying the barcode and source image whenever
- * a barcode is scanned.
+ * This  performs continuous scanning of barcodes and adds them to database
  */
 public class ContinuousCaptureActivity extends Activity implements  CompoundBarcodeView.TorchListener {
     private static final String TAG = ContinuousCaptureActivity.class.getSimpleName();
     private CompoundBarcodeView barcodeView;
     private Button switchFlashlightButton;
-   // private SQLiteDatabase db;
-    //String[] Scans = new String[100];
     List<String> Scans = new ArrayList<String>();
     int x = 0;
-String coursename;
-String coursecode;
     String table_name="";
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+    String newDatecreated;
+    String scanned;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        setContentView(R.layout.continuous_scan);
+        setContentView(R.layout.continuous_scan);//set special layout for scanning
 
         barcodeView = (CompoundBarcodeView) findViewById(R.id.barcode_scanner);
         barcodeView.decodeContinuous(callback);
@@ -76,86 +75,44 @@ String coursecode;
         @Override
 
         public void barcodeResult(BarcodeResult result) {
-//            Bundle bundle = getIntent().getExtras();
-//            if(bundle != null){
-////        if (bundle.containsKey("coursename")) {
-//                coursename = bundle.getString("coursename");
-//                coursecode = bundle.getString("coursecode");
-//            }
+
             SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             String course_name = prefs.getString("coursename",null);//"No name defined" is the default value.
             String course_code = prefs.getString("coursecode",null);//"No name defined" is the default value.
 
-            String new_coursename=course_name.replaceAll("\\s+","");
-            String new_coursecode=course_code.replaceAll("\\s+", "");
-            //String new_coursecode=coursecode.replaceAll("\\s+","");
-            //String new_coursename=coursename.replaceAll("\\s+","");
-
+            String new_coursename=course_name.replaceAll("\\s+","_");//replaces spaces with underscores
+            String new_coursecode=course_code.replaceAll("\\s+", "_");//replaces spaces with underscores
             table_name=new_coursename+new_coursecode;
-            //Toast.makeText(ContinuousCaptureActivity.this,table_name, Toast.LENGTH_SHORT).show();
 
-            //IDsDBHelper id = new IDsDBHelper(ContinuousCaptureActivity.this);
-            //id.createFriendTable(table_name);
 
             if (result.getText() != null) {
+                Log.v(TAG,"ID found: "+result.getText());
 
-                if (Scans.contains(result.getText())) {
-               // if (Arrays.asList(Scans).contains(result.getText())) {
-                    Toast.makeText(ContinuousCaptureActivity.this, "ID number already in list", Toast.LENGTH_SHORT).show();
+                    scanned=result.getText();
+                if (Scans.contains(result.getText())) {//checks if entry was already scanned in the particular session
+                    Toast.makeText(ContinuousCaptureActivity.this,getString(R.string.toast_scan), Toast.LENGTH_SHORT).show();
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 400 milliseconds
-                    v.vibrate(400);
-                } else {
-
-                    //barcodeView.setStatusText(result.getText());
-                    //Scans[x] = result.getText();
+                    v.vibrate(400);//vibrate if it is
+                } else {//not in list,add to database
                     Scans.add(result.getText());
                     x++;
                     Toast.makeText(ContinuousCaptureActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    // Vibrate for 400 milliseconds
-                    v.vibrate(200);
-//                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC-04:00"));
-//                Date currentLocalTime = cal.getTime();
-//                DateFormat date = new SimpleDateFormat("HH:MM");
-//// you can get seconds by adding  "...:ss" to it
-//                date.setTimeZone(TimeZone.getTimeZone("UTC-04:00"));
-//
-//                String localTime = date.format(currentLocalTime);
-//               // String datecreated = DateFormat.getDateTimeInstance().format(new Date());
-//                Calendar c = Calendar.getInstance();
-//                SimpleDateFormat df = new SimpleDateFormat("dd-MMM");
-//                String formattedDate = df.format(c.getTime());
-                    //Toast.makeText(ContinuousCaptureActivity.this,"localTIme: "+localTime +"\n"+ "Datecreated:" +formattedDate, Toast.LENGTH_SHORT).show();
+                    // Vibrate for 200 milliseconds
+                    v.vibrate(200);//vibrate to show addition
 
-                    String datecreated = DateFormat.getDateTimeInstance().format(new Date());
-                    String newDatecreated = datecreated.replace(",", "");
-                    //IDsDBHelper mDbHelper = new IDsDBHelper(ContinuousCaptureActivity.this,table_name);
-                    // Gets the data repository in write mode
-                    //final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-                    DBHelper mDbHelper = new DBHelper(ContinuousCaptureActivity.this);
-                    // Gets the data repository in write mode
-                    final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-                    //ContentValues values = new ContentValues();
-                    //values.put(CourseContract.CourseEntry.COLUMN_NAME_ID, courseID);
-                    //values.put(IDsContract.IDsEntry.COLUMN_NAME_idnumber, result.getText());
-                    //values.put(IDsContract.IDsEntry.COLUMN_NAME_time, localTime);
-                    //values.put(IDsContract.IDsEntry.COLUMN_NAME_DATE_CREATED, datecreated);
+                    String datecreated = DateFormat.getDateTimeInstance().format(new Date());//gets the exact date and time
+                     newDatecreated = datecreated.replace(",", "");//takes out the , to put nothing -blank
 
-                    String sql = "insert into " + table_name + " (idnumber,time) values('" + result.getText() + "', '" + newDatecreated + "');";
-                    db.execSQL(sql);
-                    db.close();
-                    //final long newRowId = db.insert(table_name, null, values);
+                    new addIDAsync().execute("");//calling async method to add ID numbers Asynchronously each time
 
-                    //Toast.makeText(ContinuousCaptureActivity.this,"Value added to db", Toast.LENGTH_SHORT).show();
+
 
 
                 }
             }
-            //Added preview of scanned barcode
-            //ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
-            // imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
-            //Scans.clear();
+
         }
 
         @Override
@@ -177,32 +134,11 @@ String coursecode;
         barcodeView.pause();
     }
 
-//    public void pause(View view) {
-//        barcodeView.pause();
-//    }
-//
-//    public void resume(View view) {
-//        barcodeView.resume();
-//    }
-//
-//    public void triggerScan(View view) {
-//        barcodeView.decodeSingle(callback);
-//    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-
-//    @Override
-//    public void onBackPressed() {
-//       // Bundle b = new Bundle();
-//        //b.putStringArray("ARRAY_LIST", Scans);
-//        Intent i = new Intent(ContinuousCaptureActivity.this, scan_home.class);
-//        //i.putExtras(b);
-//        startActivity(i);
-//    }
 
     private boolean hasFlash() {
         return getApplicationContext().getPackageManager()
@@ -226,4 +162,44 @@ String coursecode;
     public void onTorchOff() {
         switchFlashlightButton.setText(R.string.turn_on_flashlight);
     }
+
+
+
+    private class addIDAsync extends AsyncTask<String,Void,Long> {//Async task for adding ID number in the background because it may be alot of ID's being scanned
+        ContentValues values;
+        @Override
+        protected void onPreExecute(){
+            values = new ContentValues();
+            values.put(IDsContract.IDsEntry.COLUMN_NAME_idnumber, scanned);
+            values.put(IDsContract.IDsEntry.COLUMN_NAME_time, newDatecreated);
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Long doInBackground(String...params){
+            long id=0;
+            try{
+                DBHelper mDbHelper = new DBHelper(ContinuousCaptureActivity.this);
+                // Gets the data repository in write mode
+                final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                 id = db.insert(table_name, null, values);
+                db.close();
+
+
+            }catch (SQLiteException e){
+                Log.v(TAG,"Exception "+e.getMessage());
+            }
+            return id;
+        }
+
+        @Override
+        protected  void onPostExecute(Long id){
+            super.onPostExecute(id);
+        }
+
+    }
 }
+
+

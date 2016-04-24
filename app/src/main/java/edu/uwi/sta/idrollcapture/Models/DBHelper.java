@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +42,18 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public  List<courses> getCourse(){
+    public  List<courses> getCourse(){//method to return all the courses
+
+
         String selectQuery = "SELECT coursename,coursecode FROM course ";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         List<courses> FavList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                courses list = new courses();
-                list.setCourse(cursor.getString(0));
-                list.setCode(cursor.getString(1));
+                courses list = new courses();//course class instantiation
+                list.setCourse(cursor.getString(0));//first column query
+                list.setCode(cursor.getString(1));//second column of query
                 FavList.add(list);
             } while (cursor.moveToNext());
         }
@@ -58,6 +61,10 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return FavList;
     }
+
+
+
+
 
 
 }

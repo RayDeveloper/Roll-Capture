@@ -15,37 +15,8 @@
     tools:showIn="@layout/activity_scan_home"
     android:clickable="false">
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/StartCamera"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/technology"
-        android:layout_marginTop="46dp"
-        android:layout_below="@+id/coursecode_txtview"
-        android:layout_toLeftOf="@+id/coursecode_txtview"
-        android:layout_toStartOf="@+id/coursecode_txtview" />
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/Register"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/tool"
-        android:layout_alignTop="@+id/StartCamera"
-        android:layout_alignRight="@+id/folder"
-        android:layout_alignEnd="@+id/folder" />
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/Export"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/cexport"
-        android:layout_below="@+id/textView5"
-        android:layout_toLeftOf="@+id/coursecode_txtview"
-        android:layout_toStartOf="@+id/coursecode_txtview"
-        android:layout_marginTop="82dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,52 +41,154 @@
         android:layout_alignLeft="@+id/coursename_txtview"
         android:layout_alignStart="@+id/coursename_txtview" />
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/folder"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:src="@drawable/fold"
-        android:layout_above="@+id/textView13"
-        android:layout_toRightOf="@+id/coursecode_txtview"
-        android:layout_toEndOf="@+id/coursecode_txtview" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="     Camera"
-        android:id="@+id/textView5"
-        android:layout_toLeftOf="@+id/coursecode_txtview"
-        android:layout_alignTop="@+id/textView6"
-        android:layout_alignLeft="@+id/StartCamera"
-        android:layout_alignStart="@+id/StartCamera" />
+    <FrameLayout
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:id="@+id/frameLayout2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Opens the register"
-        android:id="@+id/textView6"
-        android:layout_below="@+id/Register"
-        android:layout_alignRight="@+id/Register"
-        android:layout_alignEnd="@+id/Register" />
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/StartCamera"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/technology"
+            android:layout_gravity="left|top"
+            android:layout_alignTop="@+id/frameLayout2"
+            android:layout_alignRight="@+id/textView6"
+            android:layout_alignEnd="@+id/textView6" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="open .txt file"
-        android:id="@+id/textView12"
-        android:layout_below="@+id/folder"
-        android:layout_alignLeft="@+id/folder"
-        android:layout_alignStart="@+id/folder" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="      Export"
-        android:id="@+id/textView13"
-        android:layout_below="@+id/Export"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignStart="@+id/textView5" />
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/Export"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/cexport"
+            android:layout_below="@+id/textView5"
+            android:layout_toLeftOf="@+id/coursecode_txtview"
+            android:layout_toStartOf="@+id/coursecode_txtview"
+            android:layout_marginTop="82dp"
+            android:layout_gravity="left|bottom" />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/Register"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/tool"
+            android:layout_alignTop="@+id/StartCamera"
+            android:layout_alignRight="@+id/folder"
+            android:layout_alignEnd="@+id/folder"
+            android:layout_gravity="right|top" />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/folder"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:src="@drawable/fold"
+            android:layout_above="@+id/textView13"
+            android:layout_toRightOf="@+id/coursecode_txtview"
+            android:layout_toEndOf="@+id/coursecode_txtview"
+            android:layout_gravity="right|bottom" />
+
+        <TextView
+            android:layout_width="93dp"
+            android:layout_height="wrap_content"
+            android:text="      Export"
+            android:id="@+id/textView13"
+            android:layout_below="@+id/coursecode_txtview"
+            android:layout_toLeftOf="@+id/coursecode_txtview"
+            android:layout_toStartOf="@+id/coursecode_txtview"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="left|bottom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="open .txt file"
+            android:id="@+id/textView12"
+            android:layout_gravity="right|bottom"
+            android:layout_above="@+id/frameLayout2"
+            android:layout_alignRight="@+id/frameLayout2"
+            android:layout_alignEnd="@+id/frameLayout2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Opens the register"
+            android:id="@+id/textView6"
+            android:layout_below="@+id/Register"
+            android:layout_alignRight="@+id/Register"
+            android:layout_alignEnd="@+id/Register"
+            android:layout_gravity="right|top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="     Camera"
+            android:id="@+id/textView5"
+            android:layout_toLeftOf="@+id/coursecode_txtview"
+            android:layout_alignTop="@+id/textView6"
+            android:layout_alignLeft="@+id/StartCamera"
+            android:layout_alignStart="@+id/StartCamera"
+            android:layout_gravity="left|top" />
+
+        <!--<ImageButton-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:id="@+id/Export"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:src="@drawable/export"-->
+            <!--android:layout_gravity="left|bottom"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true" />-->
+
+        <!--<ImageButton-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:id="@+id/folder"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:clickable="true"-->
+            <!--android:src="@drawable/folder"-->
+            <!--android:layout_gravity="right|bottom"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true" />-->
+
+        <!--<ImageButton-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="100dp"-->
+                <!--android:id="@+id/Register"-->
+                <!--android:background="?android:attr/selectableItemBackground"-->
+                <!--android:src="@drawable/schedule"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_below="@+id/coursename_txtview"-->
+            <!--android:layout_gravity="right|top"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true" />-->
+
+        <!--<ImageButton-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:id="@+id/StartCamera"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:src="@drawable/camera"-->
+            <!--android:layout_gravity="left|top"-->
+            <!--android:layout_below="@+id/coursecode_txtview"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true" />-->
+
+    </FrameLayout>
+
+
+
 
 </RelativeLayout>

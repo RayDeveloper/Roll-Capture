@@ -10,11 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class splash extends AppCompatActivity {
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final int SPLASH_DISPLAY_LENGTH = 1000;//1sec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash);
+        setContentView(R.layout.splash);//sets custom layout for splash screen
 
 
                 /* New Handler to start the Menu-Activity
@@ -22,8 +22,8 @@ public class splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(splash.this, MainActivity.class);
+                /* Creates an Intent that will start the Menu-Activity. */
+                Intent mainIntent = new Intent(splash.this, MainActivity.class);//after time elapses launch the main activity
                 startActivity(mainIntent);
                 finish();
             }

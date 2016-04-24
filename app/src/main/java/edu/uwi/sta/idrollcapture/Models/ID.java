@@ -3,36 +3,28 @@ package edu.uwi.sta.idrollcapture.Models;
 /**
  * Created by Raydon on 3/15/2016.
  */
-public class ID {
+public class ID {//a class to set and retrieve the values for ID's
 
-    String slno;
-    String name;
-    String phone;
+    String ID;
+    String time;
 
     public String getID() {
-        return slno;
+        return ID;
     }
 
-    public void setID(String slno) {
-        this.slno = slno;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getTime() {
-        return name;
+        return time;
     }
 
-    public void setTime(String name) {
-        this.name = name;
+    public void setTime(String time) {
+        this.time = time;
     }
 
 
-    public String getDate() {
-        return phone;
-    }
-
-    public void setDate(String name) {
-        this.phone = name;
-    }
 
 
 }

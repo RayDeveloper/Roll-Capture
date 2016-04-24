@@ -68,13 +68,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/name_editText"
         android:hint="Course Name"
-        android:capitalize="words"
+        android:capitalize="none"
         android:layout_below="@+id/textView8"
         android:layout_alignRight="@+id/textView8"
         android:layout_alignEnd="@+id/textView8"
         android:layout_marginTop="88dp"
         android:layout_alignLeft="@+id/imageView6"
-        android:layout_alignStart="@+id/imageView6" />
+        android:layout_alignStart="@+id/imageView6"
+         />
+
 
     <EditText
         android:layout_width="wrap_content"

@@ -3,7 +3,7 @@ package edu.uwi.sta.idrollcapture.Models;
 import android.provider.BaseColumns;
 
 /**
- * Created by 813117991 on 2/23/2016.
+ * Created by Raydon on 2/23/2016.
  */
 public class IDsContract {
     private static final String INT_TYPE=" INTEGER ";

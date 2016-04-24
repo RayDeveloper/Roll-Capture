@@ -18,9 +18,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/coursename_reg"
+        android:textSize="20sp"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2" />
+        android:layout_alignLeft="@+id/coursecode_reg"
+        android:layout_alignStart="@+id/coursecode_reg" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,38 +29,72 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/coursecode_reg"
-        android:layout_below="@+id/coursename_reg"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2" />
+        android:textSize="20sp"
+        android:layout_below="@+id/coursename_reg" />
+
+
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Id_number_heading"
-        android:textColor="#44a33c"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/register_lv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:text="No scans"
+        android:id="@android:id/empty"
+        android:textSize="40sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#BDBDBD"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#44a33c"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Id_time_heading"
-        android:id="@+id/textView4"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+    <FrameLayout
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:id="@+id/frameLayout">
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="@string/Id_number_heading"-->
+            <!--android:id="@+id/textView2"-->
+            <!--android:layout_alignTop="@+id/textView4"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_gravity="left|bottom" />-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/Id_time_heading"
+            android:id="@+id/textView4"
+            android:layout_marginTop="54dp"
+            android:textColor="#44a33c"
+            android:layout_below="@+id/coursecode_reg"
+            android:layout_alignRight="@+id/register_lv"
+            android:layout_alignEnd="@+id/register_lv"
+            android:layout_gravity="right|bottom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/Id_number_heading"
+            android:textColor="#44a33c"
+            android:id="@+id/textView2"
+            android:layout_above="@+id/register_lv"
+            android:layout_gravity="left|bottom" />
+    </FrameLayout>
 
     <ListView
         android:layout_width="400dp"
         android:layout_height="430dp"
         android:id="@+id/register_lv"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/frameLayout" />
+
+
 
 </RelativeLayout>

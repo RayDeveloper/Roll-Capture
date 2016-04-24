@@ -69,15 +69,15 @@ public class IDsDBHelper extends SQLiteOpenHelper {
         db.execSQL(createIDtable);
     }
 
-    public  List<ID> getIDs(String tablename){
-        //String selectQuery = "SELECT idnumber,time FROM "+  tablename ;
+    public  List<ID> getIDs(String tablename){//to retrieve the ID's from database
+
         Cursor cursor = getReadableDatabase().rawQuery("Select idnumber,time from " + tablename, null);
         List<ID> FavList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                ID list = new ID();
-                list.setID(cursor.getString(1));
-                list.setTime(cursor.getString(2));
+                ID list = new ID();//ID class instantiation
+                list.setID(cursor.getString(1));//first column of query
+                list.setTime(cursor.getString(2));//second column of query
                 FavList.add(list);
             } while (cursor.moveToNext());
         }
