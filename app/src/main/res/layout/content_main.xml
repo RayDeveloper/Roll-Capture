@@ -16,21 +16,21 @@
 
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/courseList"
         android:layout_marginTop="74dp"
-        android:src="@drawable/courselist"
+        android:src="@drawable/book"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:clickable="true" />
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/newCourse"
-        android:src="@drawable/setup"
+        android:src="@drawable/settings"
         android:layout_below="@+id/courseList"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
